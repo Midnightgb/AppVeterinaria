@@ -1,18 +1,12 @@
 
 package aplicacion.veterinaria.GUI;
 
-import javax.swing.JFrame;
-
-
 public class VentanaLogin extends javax.swing.JFrame {
 
     public VentanaLogin() {
         initComponents();
-        settings();
     }
-    private void settings(){
-        setLocationRelativeTo(null);
-    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -29,7 +23,6 @@ public class VentanaLogin extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         setTitle("Login");
         setResizable(false);
@@ -102,20 +95,21 @@ public class VentanaLogin extends javax.swing.JFrame {
                     .addComponent(cedulaInput))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, loginLayout.createSequentialGroup()
-                .addGap(0, 141, Short.MAX_VALUE)
+                .addGap(0, 140, Short.MAX_VALUE)
                 .addComponent(imgLogo)
                 .addGap(129, 129, 129))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, loginLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(loginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(loginLayout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addComponent(loginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(contraseniaOlvidada)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, loginLayout.createSequentialGroup()
                         .addComponent(registerButton, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(29, 29, 29)))
-                .addGap(137, 137, 137))
+                        .addGap(162, 162, 162))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, loginLayout.createSequentialGroup()
+                        .addComponent(contraseniaOlvidada)
+                        .addGap(131, 131, 131))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, loginLayout.createSequentialGroup()
+                        .addComponent(loginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(148, 148, 148))))
         );
         loginLayout.setVerticalGroup(
             loginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -136,19 +130,23 @@ public class VentanaLogin extends javax.swing.JFrame {
                 .addComponent(contraseniaOlvidada)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(registerButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(61, Short.MAX_VALUE))
+                .addContainerGap(74, Short.MAX_VALUE))
         );
 
-        getContentPane().add(login, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 420, 510));
+        getContentPane().add(login, java.awt.BorderLayout.CENTER);
         setVisible(true);
         revalidate();
         repaint();
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         System.out.println("Iniciar sesion hola");
+        VentanaPrincipal main = new VentanaPrincipal();
+        main.setVisible(true);
+        setVisible(false);
     }//GEN-LAST:event_loginButtonActionPerformed
 
     private void registerButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registerButtonMousePressed
@@ -160,6 +158,9 @@ public class VentanaLogin extends javax.swing.JFrame {
 
     private void contraseniaOlvidadaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_contraseniaOlvidadaMouseClicked
         System.out.println("hola olvide la contra");
+        VentanaOlvideContra olvido = new VentanaOlvideContra();
+        olvido.setVisible(true);
+        setVisible(false);
     }//GEN-LAST:event_contraseniaOlvidadaMouseClicked
 
 
