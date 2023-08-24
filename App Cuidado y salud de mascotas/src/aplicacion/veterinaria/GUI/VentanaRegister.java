@@ -1,5 +1,5 @@
 package aplicacion.veterinaria.GUI;
-import aplicacion.veterinaria.DataBase;
+import aplicacion.veterinaria.*;
 import java.sql.*;
 
 public class VentanaRegister extends javax.swing.JFrame {
@@ -234,7 +234,7 @@ public class VentanaRegister extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void registerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerButtonActionPerformed
-        DataBase db = new DataBase(); // Crear instancia de DataBase
+        DataBase db = new DataBase();
         String cedula = cedulaInput.getText();
         String nombre = nombreInput.getText();
         String apellido = apellidoInput.getText();
@@ -243,54 +243,69 @@ public class VentanaRegister extends javax.swing.JFrame {
         String contrasenaConfirmada = new String(contraseniaInputConfirm.getPassword());
         boolean estadoCedula = false;
 
-        //verificando cédula válida
-        if (cedula.matches("\\d+")){
+        // Verificar si la cédula es válida
+        if (cedula.matches("\\d+")) {
             estadoCedula = true;
         }
 
-        //acciones finales
-        if (!estadoCedula){
-            System.out.println("Cédula no válida. Intente nuevamente.");
-
-        } else if (cedula.isEmpty() || nombre.isEmpty() || apellido.isEmpty() || correo.isEmpty() || contrasena.isEmpty() || contrasenaConfirmada.isEmpty()){
-            System.out.println("Por favor, diligencie todos los campos.");
-
-        } else if (!contrasena.equals(contrasenaConfirmada)){
-            System.out.println("Las contraseñas no coinciden.");
-
+        // Verificar otros campos y proceder con la inserción...
+        if (!estadoCedula) {
+            Herramientas.error("Cédula no válida. Intente nuevamente.",false);
+        } else if (cedula.isEmpty() || nombre.isEmpty() || apellido.isEmpty() || correo.isEmpty() || contrasena.isEmpty() || contrasenaConfirmada.isEmpty()) {
+            Herramientas.error("Por favor, diligencie todos los campos.",false);
+        } else if (!contrasena.equals(contrasenaConfirmada)) {
+            Herramientas.error("Las contraseñas no coinciden.",false);
         } else {
-            String insertQuery = "INSERT INTO usuarios (documento, nombre, apellidos, correo, contrasena, fecha) VALUES (?, ?, ?, ?, ?, NOW())";
-
+            // Verificar si el usuario ya está registrado
+            String selectQuery = "SELECT * FROM usuarios WHERE documento = ?";
             try {
-                PreparedStatement insertStatement = db.getConexion().prepareStatement(insertQuery);
-                insertStatement.setString(1, cedula);
-                insertStatement.setString(2, nombre);
-                insertStatement.setString(3, apellido);
-                insertStatement.setString(4, correo);
-                insertStatement.setString(5, contrasena);
+                PreparedStatement selectStatement = db.getConexion().prepareStatement(selectQuery);
+                selectStatement.setString(1, cedula);
+                ResultSet resultSet = selectStatement.executeQuery();
 
-                int rowsAffected = insertStatement.executeUpdate();
-
-                if (rowsAffected > 0) {
-                    System.out.println("Usuario registrado exitosamente.");
-                } else {
-                    System.out.println("No se pudo registrar el usuario.");
+                if (resultSet.next()) {
+                    Herramientas.error("El usuario ya esta registrado.",false);
+                    db.getConexion().close();
+                    return; // Salir del método si el usuario ya está registrado
                 }
 
-            } catch (SQLException ex) {
-                System.out.println("Error al insertar usuario: " + ex.getMessage());
-            }
+                // Si llegamos aquí, procedemos con la inserción
+                String insertQuery = "INSERT INTO usuarios (documento, nombre, apellidos, correo, contrasena, fecha) VALUES (?, ?, ?, ?, ?, NOW())";
 
-            // Cerrar la conexión
-            try {
-                db.getConexion().close();
-                System.out.println("Conexión cerrada.");
+                try {
+                    PreparedStatement insertStatement = db.getConexion().prepareStatement(insertQuery);
+                    insertStatement.setString(1, cedula);
+                    insertStatement.setString(2, nombre);
+                    insertStatement.setString(3, apellido);
+                    insertStatement.setString(4, correo);
+                    insertStatement.setString(5, contrasena);
+
+                    int rowsAffected = insertStatement.executeUpdate();
+
+                    if (rowsAffected > 0) {
+                        VentanaLogin login = new VentanaLogin();
+                        setVisible(false);
+                        Herramientas.error("Usuario registrado exitosamente.",true);
+                    } else {
+                        Herramientas.error("No se pudo registrar el usuario.",false);
+                    }
+
+                } catch (SQLException ex) {
+                    System.out.println("Error al insertar usuario: " + ex.getMessage());
+                }
+
+                // Cerrar la conexión
+                try {
+                    db.getConexion().close();
+                    System.out.println("Conexión cerrada.");
+                } catch (SQLException ex) {
+                    System.out.println("Error al cerrar conexión: " + ex.getMessage());
+                }
+
+
             } catch (SQLException ex) {
-                System.out.println("Error al cerrar conexión: " + ex.getMessage());
+                System.out.println("Error al verificar usuario: " + ex.getMessage());
             }
-            System.out.println("Registrar");
-            VentanaLogin login = new VentanaLogin();
-            setVisible(false);
         }
     }//GEN-LAST:event_registerButtonActionPerformed
 
