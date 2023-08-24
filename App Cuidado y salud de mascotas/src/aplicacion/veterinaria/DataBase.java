@@ -1,8 +1,6 @@
-package clases;
+package aplicacion.veterinaria;
 
 import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class DataBase {
     
@@ -28,6 +26,10 @@ public class DataBase {
         }
     }
     
+    public Connection getConexion() {
+        return conexion;
+    }   
+
     public boolean insertarUsuario(String cedula, String nombre, String apellidos, String correo, String usuario, String contrasena){
         boolean respuesta = false;
         
