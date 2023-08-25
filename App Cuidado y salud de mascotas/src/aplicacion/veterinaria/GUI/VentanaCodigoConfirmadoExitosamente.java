@@ -1,10 +1,13 @@
 package aplicacion.veterinaria.GUI;
-
+import aplicacion.veterinaria.*;
+import java.sql.*;
 
 public class VentanaCodigoConfirmadoExitosamente extends javax.swing.JFrame {
+    final private int cedula;
 
-    public VentanaCodigoConfirmadoExitosamente() {
+    public VentanaCodigoConfirmadoExitosamente(int cedula) {
         initComponents();
+        this.cedula = cedula;
     }
 
     @SuppressWarnings("unchecked")
@@ -36,9 +39,9 @@ public class VentanaCodigoConfirmadoExitosamente extends javax.swing.JFrame {
         newPassInput.setForeground(new java.awt.Color(204, 204, 204));
         newPassInput.setText("jPasswordField1");
         newPassInput.setBorder(null);
-        newPassInput.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                newPassInputActionPerformed(evt);
+        newPassInput.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                newPassInputKeyTyped(evt);
             }
         });
 
@@ -50,9 +53,9 @@ public class VentanaCodigoConfirmadoExitosamente extends javax.swing.JFrame {
         confirmarPassInput.setForeground(new java.awt.Color(204, 204, 204));
         confirmarPassInput.setText("jPasswordField1");
         confirmarPassInput.setBorder(null);
-        confirmarPassInput.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                confirmarPassInputActionPerformed(evt);
+        confirmarPassInput.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                confirmarPassInputKeyTyped(evt);
             }
         });
 
@@ -144,26 +147,100 @@ public class VentanaCodigoConfirmadoExitosamente extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void newPassInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newPassInputActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_newPassInputActionPerformed
-
-    private void confirmarPassInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarPassInputActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_confirmarPassInputActionPerformed
-
+    
+    //Botón confirmar nueva contraseña
     private void confirmarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confirmarMouseClicked
+        
+        DataBase db = new DataBase();
         System.out.println("confirmar nueva contra");
-        VentanaLogin login = new VentanaLogin();
-        setVisible(false);
+        String pass1 = new String(newPassInput.getPassword());
+        String pass2 = new String(confirmarPassInput.getPassword());
+        
+        boolean confirmacion = validarPass(pass1, pass2);
+        
+        if (!confirmacion){
+            Herramientas.error("Las contraseñas no coinciden.",false);
+            
+        } else if (pass1.isEmpty() || pass2.isEmpty()) {
+            Herramientas.error("Diligencia todos los campos.",false);
+            
+        } else {
+
+            
+            // Verificar si el usuario ya está registrado
+            String consulta = "SELECT * FROM usuarios WHERE documento = ?";
+            
+            try {
+                PreparedStatement selectStatement = db.getConexion().prepareStatement(consulta);
+                selectStatement.setInt(1, cedula);
+                ResultSet resultSet = selectStatement.executeQuery();
+
+                if (resultSet.next()) {
+
+                    String updateQuery = "UPDATE usuarios SET contrasena = ? WHERE documento = ?";
+                    
+                    try {
+                        PreparedStatement updateStatement = db.getConexion().prepareStatement(updateQuery);
+                        updateStatement.setString(1, pass1);
+                        updateStatement.setInt(2, cedula);
+
+                        int rowsAffected = updateStatement.executeUpdate();
+
+                        if (rowsAffected > 0) {
+                            Herramientas.error("Contraseña actualizada exitosamente.",true);
+                            VentanaLogin login = new VentanaLogin();
+                            setVisible(false);
+                        } else {
+                            Herramientas.error("No se pudo actualizar la contraseña.",false);
+                        }
+                    } catch (SQLException ex) {
+                        System.out.println("Error al actualizar contraseña: " + ex.getMessage());
+                    }
+
+                    db.getConexion().close();
+                    return;
+                }
+
+
+            } catch (SQLException ex) {
+                System.out.println("Error al verificar usuario: " + ex.getMessage());
+            }
+        }
     }//GEN-LAST:event_confirmarMouseClicked
 
+    //Función validar contraseñas
+    private boolean validarPass(String pass1, String pass2){
+        boolean validacion = false;
+        
+        if (pass1.equals(pass2)){
+            validacion = true;
+        }
+        return validacion;
+    }
+    
     private void cancelarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelarMouseClicked
         System.out.println("cancelar nueva contra");
         VentanaLogin login = new VentanaLogin();
         setVisible(false);
     }//GEN-LAST:event_cancelarMouseClicked
+    //Input nueva contraseña
+    private boolean borrado = false;
+    private void newPassInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_newPassInputKeyTyped
+         if(!borrado){
+             
+            newPassInput.setText("");
+            borrado = true;
+        }
+    }//GEN-LAST:event_newPassInputKeyTyped
+    //Input confirmar contraseña
+    private boolean borrado2 = false;
+    private void confirmarPassInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_confirmarPassInputKeyTyped
+        if(!borrado2){
+             
+            confirmarPassInput.setText("");
+            borrado2 = true;
+        }
+    }//GEN-LAST:event_confirmarPassInputKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

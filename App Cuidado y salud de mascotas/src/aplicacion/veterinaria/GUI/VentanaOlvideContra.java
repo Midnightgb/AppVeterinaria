@@ -1,4 +1,12 @@
 package aplicacion.veterinaria.GUI;
+import aplicacion.veterinaria.Herramientas;
+import java.util.Random;
+import javax.mail.*;
+import java.util.*;
+import java.awt.*;
+import java.sql.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 public class VentanaOlvideContra extends javax.swing.JFrame {
 
@@ -123,13 +131,125 @@ public class VentanaOlvideContra extends javax.swing.JFrame {
             cedulaBuscar.setText("");
             borrado = true;
     }//GEN-LAST:event_cedulaBuscarKeyTyped
-
+    //buscar usuario 
     private void buscarButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buscarButtonMouseClicked
-        System.out.println("buscar cuenta");
-        VentanaConfirmarCodigo confirmacion = new VentanaConfirmarCodigo();
-        confirmacion.setVisible(true);
-        setVisible(false);
+        System.out.println("Buscar cuenta");
+        String cedula = cedulaBuscar.getText();
+        
+        if (!cedula.isEmpty() && cedula.matches("\\d+")) {
+            int cedulaInt = Integer.parseInt(cedula);
+            boolean usuarioExiste = verificarUsuarioExistente(cedulaInt);
+            
+            if (!usuarioExiste) {
+                Herramientas.error("Usuario ingresado no registrado.",false);
+            } else {
+                String codigo = generarCodigo();
+                String correo = obtenerCorreo(cedulaInt);
+                boolean envio = enviarCodigo(correo, codigo);
+                if (envio) {
+                    VentanaConfirmarCodigo confirmacion = new VentanaConfirmarCodigo(codigo, cedulaInt);
+                    confirmacion.setVisible(true);
+                    setVisible(false);   
+                }
+            }
+        } else {
+            Herramientas.error("Por favor, ingrese una cédula válida.",false);
+        }
     }//GEN-LAST:event_buscarButtonMouseClicked
+    private boolean verificarUsuarioExistente(int cedula) {
+        try {
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mascotas", "root", "");
+
+            String query = "SELECT COUNT(*) FROM usuarios WHERE documento = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, cedula);
+            
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            int count = resultSet.getInt(1);
+
+            resultSet.close();
+            preparedStatement.close();
+            conn.close();
+
+            return count > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    
+    
+    //Generar código aleatorio
+    private String generarCodigo() {
+        Random numero = new Random();
+        int codigo = numero.nextInt(9000) + 1000;
+        return Integer.toString(codigo);
+    }
+    
+    
+    //Obtener correo del usuario
+    private String obtenerCorreo(int cedula) {
+    String correo = "";
+
+    try {
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mascotas", "root", "");
+
+        String consulta = "SELECT correo FROM usuarios WHERE documento = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(consulta);
+        preparedStatement.setInt(1, cedula);
+
+        ResultSet resultado = preparedStatement.executeQuery();
+        if (resultado.next()) {
+            correo = resultado.getString("correo");
+        }
+
+        resultado.close();
+        preparedStatement.close();
+        connection.close();
+        
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return correo;
+}
+    
+    
+    private boolean enviarCodigo(String correo, String codigo) {
+        
+        Properties propiedades= new Properties();
+        propiedades.put("mail.smtp.auth", "true");
+        propiedades.put("mail.smtp.starttls.enable", "true"); // Habilitar TLS
+        propiedades.put("mail.smtp.host", "smtp.gmail.com"); // Servidor SMTP de Gmail
+        propiedades.put("mail.smtp.port", "587"); // Puerto para TLS
+
+        // Crear una sesión de correo con autenticación
+        Session sesion = Session.getInstance(propiedades, new Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication("correocomunidadjava@gmail.com", "mvmh jlhv ziby ioih");
+            }
+        }); 
+
+        try {
+            //Crear mensaje del correo
+            Message mensaje = new MimeMessage(sesion);
+            mensaje.setFrom(new InternetAddress("correocomunidadjava@gmail.com")); // Remitente
+            mensaje.setRecipient(Message.RecipientType.TO, new InternetAddress(correo)); // Destinatario
+            mensaje.setSubject("Código de verificación"); // Asunto
+            mensaje.setText("Tu código de verificación es: " + codigo); // Cuerpo del mensaje
+
+            //Enviar el mensaje de correo
+            Transport.send(mensaje);
+            return true;
+            
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            return false; // Ocurrió un error al enviar el correo
+        }
+    }
 
 
 

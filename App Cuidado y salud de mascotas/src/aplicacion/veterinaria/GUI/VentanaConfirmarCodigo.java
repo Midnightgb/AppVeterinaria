@@ -1,16 +1,20 @@
 package aplicacion.veterinaria.GUI;
+import aplicacion.veterinaria.Herramientas;
 import javax.swing.JTextField;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
 import javax.swing.text.DocumentFilter;
 
 public class VentanaConfirmarCodigo extends javax.swing.JFrame {
 
- 
-    public VentanaConfirmarCodigo() {
+    private String codigo;
+    private int cedula;
+    
+    public VentanaConfirmarCodigo(String codigo, int cedulaInt) {
         initComponents();
+        this.codigo = codigo;
+        this.cedula = cedulaInt;
     }
 
    
@@ -191,12 +195,27 @@ public class VentanaConfirmarCodigo extends javax.swing.JFrame {
         VentanaLogin login = new VentanaLogin();
         setVisible(false);
     }//GEN-LAST:event_cancelarMouseClicked
-
+    
+    private boolean estado;
     private void confirmarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confirmarMouseClicked
-        System.out.println("confirmar codigo");
-        VentanaCodigoConfirmadoExitosamente confirmado = new VentanaCodigoConfirmadoExitosamente();
-        confirmado.setVisible(true);
-        setVisible(false);
+        String codigoIngresado = primerDigito.getText()+segundoDigito.getText()+tercerDigito.getText()+cuartoDigito.getText();
+        System.out.println(codigoIngresado);
+        if (codigoIngresado.equals(codigo)){
+            estado = true;
+        } else {
+            Herramientas.error("El código no coincide.",false);
+            estado = false;
+            VentanaOlvideContra regreso = new VentanaOlvideContra();
+            regreso.setVisible(true);
+            setVisible(false);   
+        }
+        
+        if(estado){
+            Herramientas.error("confirmar codigo",false);
+            VentanaCodigoConfirmadoExitosamente confirmado = new VentanaCodigoConfirmadoExitosamente(cedula);
+            confirmado.setVisible(true);
+            setVisible(false);
+        }
     }//GEN-LAST:event_confirmarMouseClicked
 
 

@@ -136,7 +136,7 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="newPassInputActionPerformed"/>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="newPassInputKeyTyped"/>
           </Events>
         </Component>
         <Component class="javax.swing.JSeparator" name="separadorNewPass">
@@ -168,7 +168,7 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="confirmarPassInputActionPerformed"/>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="confirmarPassInputKeyTyped"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="confirmar">

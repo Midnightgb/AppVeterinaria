@@ -1,19 +1,24 @@
 package aplicacion.veterinaria.GUI;
+
+import aplicacion.veterinaria.*;
+import java.sql.*;
+
 import java.awt.Color;
-import java.awt.Graphics;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
 public class VentanaPrincipal extends javax.swing.JFrame {
 
     private JButton pastButton;
-
-    public VentanaPrincipal() {
+    private String cedula;
+    
+    public VentanaPrincipal(String cedula) {
         initComponents();
+        this.cedula = cedula;
+        currentUser.setText(cedula);
         pastButton = mainButton;
         
-        PanelMascotas panelExternoMasc = new PanelMascotas();
+        PanelMascotas panelExternoMasc = new PanelMascotas(cedula);
         contenido.addTab("tab2", panelExternoMasc);
         
         PanelCardActividad panelExternoActividades = new PanelCardActividad();
