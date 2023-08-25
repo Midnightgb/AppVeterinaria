@@ -238,8 +238,6 @@ public class AgregarMascota extends javax.swing.JFrame {
     }//GEN-LAST:event_cancelarMousePressed
 
     private void btnUploadImageMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUploadImageMousePressed
-                System.out.println(cedula);
-
         try {
             BufferedImage image = createBufferedImage(imagenTemporal);
             if (image != null) {
@@ -257,7 +255,7 @@ public class AgregarMascota extends javax.swing.JFrame {
                 // Guardar los datos en la base de datos
                 guardarDatosEnBaseDeDatos(nombre, raza, edad, generoSeleccionado , imageData);
 
-                Herramientas.error("Datos de" + nombre + " guardados.",true);
+                Herramientas.error("Datos de " + nombre + " guardados.",true);
                 setVisible(false);
             } else {
                 Herramientas.error("No se pudo cargar la imagen.",false);
@@ -267,32 +265,32 @@ public class AgregarMascota extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnUploadImageMousePressed
 
-        private void guardarDatosEnBaseDeDatos(String nombre, String raza, int edad, String genero, byte[] imagenData) {
-            try {
-                DataBase db = new DataBase();
-                Connection conn = db.getConexion();
-                System.out.println(cedula);
-                int cedulaInt = Integer.parseInt(cedula);
-                int id_user = Herramientas.obtenerIdUsuarioPorDocumento(cedulaInt);
-                // Insertar datos en la tabla de mascotas
-                String insertQuery = "INSERT INTO mascotas (nombre, raza, edad, genero, usuario, imagen) VALUES (?, ?, ?, ?, ?,?)";
-                PreparedStatement insertStatement = conn.prepareStatement(insertQuery);
-                insertStatement.setString(1, nombre);
-                insertStatement.setString(2, raza);
-                insertStatement.setInt(3, edad);
-                insertStatement.setString(4, genero);
-                insertStatement.setInt(5, id_user);
-                insertStatement.setBytes(6, imagenData);
+    private void guardarDatosEnBaseDeDatos(String nombre, String raza, int edad, String genero, byte[] imagenData) {
+        try {
+            DataBase db = new DataBase();
+            Connection conn = db.getConexion();
+            System.out.println(cedula);
+            int cedulaInt = Integer.parseInt(cedula);
+            int id_user = Herramientas.obtenerIdUsuarioPorDocumento(cedulaInt);
+            // Insertar datos en la tabla de mascotas
+            String insertQuery = "INSERT INTO mascotas (nombre, raza, edad, genero, usuario, imagen) VALUES (?, ?, ?, ?, ?,?)";
+            PreparedStatement insertStatement = conn.prepareStatement(insertQuery);
+            insertStatement.setString(1, nombre);
+            insertStatement.setString(2, raza);
+            insertStatement.setInt(3, edad);
+            insertStatement.setString(4, genero);
+            insertStatement.setInt(5, id_user);
+            insertStatement.setBytes(6, imagenData);
 
-                insertStatement.executeUpdate();
+            insertStatement.executeUpdate();
 
-                // Cerrar recursos
-                insertStatement.close();
+            // Cerrar recursos
+            insertStatement.close();
 
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+    }
     
     private BufferedImage createBufferedImage(ImageIcon temporal){
         Image imagen = temporal.getImage();

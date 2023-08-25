@@ -11,7 +11,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private JButton pastButton;
     private String cedula;
-    
     public VentanaPrincipal(String cedula) {
         initComponents();
         this.cedula = cedula;
@@ -379,6 +378,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             pastButton.setBackground(new java.awt.Color(51, 51, 51));
         
         pastButton = mascotasButton;
+        if (contenido.getSelectedIndex() == 1) {
+            PanelMascotas panelMascotas = (PanelMascotas) contenido.getComponentAt(1);
+            panelMascotas.consultarDatosEnBaseDeDatos();
+        }
     }//GEN-LAST:event_mascotasButtonActionPerformed
 
     private void mainButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mainButtonMouseClicked
