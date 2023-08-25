@@ -1,5 +1,10 @@
-
 package aplicacion.veterinaria.GUI;
+
+import aplicacion.veterinaria.*;
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.ResultSet;
 
 public class VentanaLogin extends javax.swing.JFrame {
 
@@ -11,7 +16,7 @@ public class VentanaLogin extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        panelLogin = new javax.swing.JPanel();
         login = new javax.swing.JPanel();
         contraseniaInput = new javax.swing.JPasswordField();
         cedulaInput = new javax.swing.JTextField();
@@ -27,7 +32,7 @@ public class VentanaLogin extends javax.swing.JFrame {
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.setBackground(new java.awt.Color(43, 43, 43));
+        panelLogin.setBackground(new java.awt.Color(43, 43, 43));
 
         setTitle("Login");
         setResizable(false);
@@ -150,18 +155,18 @@ public class VentanaLogin extends javax.swing.JFrame {
                 .addContainerGap(69, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout panelLoginLayout = new javax.swing.GroupLayout(panelLogin);
+        panelLogin.setLayout(panelLoginLayout);
+        panelLoginLayout.setHorizontalGroup(
+            panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLoginLayout.createSequentialGroup()
                 .addContainerGap(100, Short.MAX_VALUE)
                 .addComponent(login, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(56, 56, 56))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+        panelLoginLayout.setVerticalGroup(
+            panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLoginLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(login, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -170,17 +175,56 @@ public class VentanaLogin extends javax.swing.JFrame {
         revalidate();
         repaint();
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 420, -1));
+        getContentPane().add(panelLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 420, -1));
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-        System.out.println("Iniciar sesion hola");
-        VentanaPrincipal main = new VentanaPrincipal();
-        main.setVisible(true);
-        setVisible(false);
+        DataBase db = new DataBase(); // Crear instancia de DataBase
+        String cedula = cedulaInput.getText();
+        String contrasena = new String(contraseniaInput.getPassword());
+        boolean estadoCedula = true;
+
+        //acciones finales
+        if (!estadoCedula) {
+            Herramientas.error("Cédula no válida. Intente nuevamente.",false);
+
+        } else if (cedula.isEmpty() || contrasena.isEmpty()) {
+            Herramientas.error("Por favor, diligencie todos los campos.",false);
+
+        } else {
+            String selectQuery = "SELECT * FROM usuarios WHERE documento = ? AND contrasena = ?";
+
+            try {
+                PreparedStatement selectStatement = db.getConexion().prepareStatement(selectQuery);
+                selectStatement.setString(1, cedula);
+                selectStatement.setString(2, contrasena);
+
+                ResultSet resultSet = selectStatement.executeQuery();
+
+                if (resultSet.next()) {
+                    System.out.println("Inicio de sesión exitoso.");
+                    VentanaPrincipal main = new VentanaPrincipal(cedula);
+                    main.setVisible(true);
+                    setVisible(false);
+                } else {
+                    Herramientas.error("Cedula o contraseña incorrecta",false);
+
+                }
+
+            } catch (SQLException ex) {
+                System.out.println("Error al realizar la consulta: " + ex.getMessage());
+            }
+
+            try {
+                db.getConexion().close();
+                System.out.println("Conexión cerrada.");
+            } catch (SQLException ex) {
+                System.out.println("Error al cerrar conexión: " + ex.getMessage());
+            }
+        }
     }//GEN-LAST:event_loginButtonActionPerformed
 
     private void registerButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registerButtonMousePressed
@@ -202,27 +246,28 @@ public class VentanaLogin extends javax.swing.JFrame {
         if (!Character.isDigit(c)) {
             evt.consume(); // No permite ingresar el carácter no numérico
         }
-        if (!borradoCedula)
+        if (!borradoCedula) {
             cedulaInput.setText("");
-            borradoCedula = true;
+        }
+        borradoCedula = true;
     }//GEN-LAST:event_cedulaInputKeyTyped
     private boolean borradoContra = false;
     private void contraseniaInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_contraseniaInputKeyTyped
-        if (!borradoContra)
+        if (!borradoContra) {
             contraseniaInput.setText("");
-            borradoContra = true;
+        }
+        borradoContra = true;
     }//GEN-LAST:event_contraseniaInputKeyTyped
-
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField cedulaInput;
     private javax.swing.JLabel contraText;
     private javax.swing.JPasswordField contraseniaInput;
     private javax.swing.JLabel contraseniaOlvidada;
     private javax.swing.JLabel imgLogo;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel login;
     private javax.swing.JButton loginButton;
+    private javax.swing.JPanel panelLogin;
     private javax.swing.JButton registerButton;
     private javax.swing.JSeparator separadorCedula;
     private javax.swing.JSeparator separadorContra;
