@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Aug 25, 2023 at 06:57 AM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 25-08-2023 a las 18:17:19
+-- Versión del servidor: 10.4.28-MariaDB
+-- Versión de PHP: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `mascotas`
+-- Base de datos: `mascotas`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `actividades_diarias`
+-- Estructura de tabla para la tabla `actividades_diarias`
 --
 
 CREATE TABLE `actividades_diarias` (
@@ -38,7 +38,7 @@ CREATE TABLE `actividades_diarias` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `mascotas`
+-- Estructura de tabla para la tabla `mascotas`
 --
 
 CREATE TABLE `mascotas` (
@@ -54,7 +54,7 @@ CREATE TABLE `mascotas` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `registro_medico`
+-- Estructura de tabla para la tabla `registro_medico`
 --
 
 CREATE TABLE `registro_medico` (
@@ -68,7 +68,7 @@ CREATE TABLE `registro_medico` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `usuarios`
+-- Estructura de tabla para la tabla `usuarios`
 --
 
 CREATE TABLE `usuarios` (
@@ -83,85 +83,85 @@ CREATE TABLE `usuarios` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Indexes for dumped tables
+-- Índices para tablas volcadas
 --
 
 --
--- Indexes for table `actividades_diarias`
+-- Indices de la tabla `actividades_diarias`
 --
 ALTER TABLE `actividades_diarias`
   ADD PRIMARY KEY (`id`),
   ADD KEY `mascota` (`mascota`);
 
 --
--- Indexes for table `mascotas`
+-- Indices de la tabla `mascotas`
 --
 ALTER TABLE `mascotas`
   ADD PRIMARY KEY (`id_mascota`),
   ADD KEY `usuario` (`usuario`);
 
 --
--- Indexes for table `registro_medico`
+-- Indices de la tabla `registro_medico`
 --
 ALTER TABLE `registro_medico`
   ADD PRIMARY KEY (`id_registro`),
   ADD KEY `mascota` (`mascota`);
 
 --
--- Indexes for table `usuarios`
+-- Indices de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`id_user`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT for table `actividades_diarias`
+-- AUTO_INCREMENT de la tabla `actividades_diarias`
 --
 ALTER TABLE `actividades_diarias`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `mascotas`
+-- AUTO_INCREMENT de la tabla `mascotas`
 --
 ALTER TABLE `mascotas`
   MODIFY `id_mascota` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `registro_medico`
+-- AUTO_INCREMENT de la tabla `registro_medico`
 --
 ALTER TABLE `registro_medico`
   MODIFY `id_registro` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `usuarios`
+-- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
   MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Constraints for dumped tables
+-- Restricciones para tablas volcadas
 --
 
 --
--- Constraints for table `actividades_diarias`
+-- Filtros para la tabla `actividades_diarias`
 --
 ALTER TABLE `actividades_diarias`
-  ADD CONSTRAINT `actividades_diarias_ibfk_1` FOREIGN KEY (`mascota`) REFERENCES `mascotas` (`id_mascota`);
+  ADD CONSTRAINT `actividades_diarias_ibfk_1` FOREIGN KEY (`mascota`) REFERENCES `mascotas` (`id_mascota`) ON DELETE CASCADE;
 
 --
--- Constraints for table `mascotas`
+-- Filtros para la tabla `mascotas`
 --
 ALTER TABLE `mascotas`
-  ADD CONSTRAINT `mascotas_ibfk_1` FOREIGN KEY (`usuario`) REFERENCES `usuarios` (`id_user`);
+  ADD CONSTRAINT `mascotas_ibfk_1` FOREIGN KEY (`usuario`) REFERENCES `usuarios` (`id_user`) ON DELETE CASCADE;
 
 --
--- Constraints for table `registro_medico`
+-- Filtros para la tabla `registro_medico`
 --
 ALTER TABLE `registro_medico`
-  ADD CONSTRAINT `registro_medico_ibfk_1` FOREIGN KEY (`mascota`) REFERENCES `mascotas` (`id_mascota`);
+  ADD CONSTRAINT `registro_medico_ibfk_1` FOREIGN KEY (`mascota`) REFERENCES `mascotas` (`id_mascota`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
