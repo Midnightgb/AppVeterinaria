@@ -7,10 +7,12 @@ import javax.swing.*;
 public class PanelMascotas extends javax.swing.JPanel {
 
     private String cedula;
-    public PanelMascotas(String cedula) {
+    private JTabbedPane contenido;
+    public PanelMascotas(String cedula, JTabbedPane contenido) {
         System.out.println(cedula);
         this.cedula = cedula;
-
+        this.contenido = contenido;
+        
         initComponents();
     }
     @SuppressWarnings("unchecked")
@@ -18,8 +20,8 @@ public class PanelMascotas extends javax.swing.JPanel {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        jPanel1 = new javax.swing.JPanel();
         addMascota = new javax.swing.JButton();
-        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 32767));
         listaMascotas = new javax.swing.JPanel();
         mascota1 = new javax.swing.JPanel();
         eliminarMascota1 = new javax.swing.JButton();
@@ -27,6 +29,23 @@ public class PanelMascotas extends javax.swing.JPanel {
         imgMascota1 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(43, 43, 43));
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel1.setBackground(new java.awt.Color(64, 64, 64));
+        jPanel1.setPreferredSize(new java.awt.Dimension(0, 12));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 827, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 6, Short.MAX_VALUE)
+        );
+
+        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 13, 827, 6));
 
         addMascota.setBackground(new java.awt.Color(90, 90, 90));
         addMascota.setFont(new java.awt.Font("Source Code Pro", 0, 14)); // NOI18N
@@ -39,11 +58,12 @@ public class PanelMascotas extends javax.swing.JPanel {
                 addMascotaMousePressed(evt);
             }
         });
+        add(addMascota, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 150, 40));
 
         listaMascotas.setBackground(new java.awt.Color(43, 43, 43));
         listaMascotas.setLayout(new java.awt.GridBagLayout());
 
-        mascota1.setBackground(new java.awt.Color(43, 43, 43));
+        mascota1.setBackground(new java.awt.Color(102, 255, 0));
         mascota1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         mascota1.setPreferredSize(new java.awt.Dimension(125, 125));
 
@@ -97,28 +117,7 @@ public class PanelMascotas extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 286, 0);
         listaMascotas.add(mascota1, gridBagConstraints);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(filler1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(addMascota, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(64, 64, 64))
-            .addComponent(listaMascotas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 827, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(addMascota, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(listaMascotas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        add(listaMascotas, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 75, 827, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void addMascotaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addMascotaMousePressed
@@ -297,25 +296,18 @@ public class PanelMascotas extends javax.swing.JPanel {
 }
     
     private void mostrarDetallesMascota(String id_mascota) {
-        VerDetallesMascotas detallesMascotas = new VerDetallesMascotas();
+        VerDetallesMascotas detallesMascotas = new VerDetallesMascotas(cedula, contenido, id_mascota);
         
-        detallesMascotas.cargarDetallesMascota(id_mascota);
+        contenido.setComponentAt(1, detallesMascotas);
 
-        JFrame frame = new JFrame("Detalles de la Mascota");
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.getContentPane().add(detallesMascotas);
-        frame.setResizable(false);
-        //frame.setLocationRelativeTo();
-        frame.pack();
-        frame.setVisible(true);
-
+        detallesMascotas.cargarDetallesMascota();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addMascota;
     private javax.swing.JButton eliminarMascota1;
-    private javax.swing.Box.Filler filler1;
     private javax.swing.JLabel imgMascota1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel listaMascotas;
     private javax.swing.JPanel mascota1;
     private javax.swing.JButton verDetallesMascota1;

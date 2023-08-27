@@ -5,10 +5,12 @@ import java.sql.*;
 
 import java.awt.Color;
 import javax.swing.JButton;
+import javax.swing.JTabbedPane;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
 public class VentanaPrincipal extends javax.swing.JFrame {
-
+    
+    private PanelMascotas panelExternoMasc;
     private JButton pastButton;
     private String cedula;
     public VentanaPrincipal(String cedula) {
@@ -17,7 +19,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         currentUser.setText(cedula);
         pastButton = mainButton;
         
-        PanelMascotas panelExternoMasc = new PanelMascotas(cedula);
+        panelExternoMasc = new PanelMascotas(cedula, contenido);
         contenido.addTab("tab2", panelExternoMasc);
         
         PanelCardActividad panelExternoActividades = new PanelCardActividad();
@@ -241,7 +243,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         topNav.setBackground(new java.awt.Color(43, 43, 43));
 
-        navLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/aplicacion/veterinaria/GUI/img/icons8-veterinarian-48.png"))); // NOI18N
+        navLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/aplicacion/veterinaria/GUI/img/PetCareNav.png"))); // NOI18N
 
         currentUserText.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         currentUserText.setForeground(new java.awt.Color(210, 210, 210));
@@ -255,9 +257,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         topNavLayout.setHorizontalGroup(
             topNavLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(topNavLayout.createSequentialGroup()
-                .addGap(17, 17, 17)
                 .addComponent(navLogo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 730, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 695, Short.MAX_VALUE)
                 .addComponent(currentUserText)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(currentUser, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -265,17 +266,15 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         );
         topNavLayout.setVerticalGroup(
             topNavLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, topNavLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(topNavLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(currentUserText)
+                    .addComponent(currentUser))
+                .addGap(20, 20, 20))
             .addGroup(topNavLayout.createSequentialGroup()
-                .addGroup(topNavLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(topNavLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(topNavLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(currentUserText)
-                            .addComponent(currentUser)))
-                    .addGroup(topNavLayout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addComponent(navLogo)))
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addComponent(navLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 6, Short.MAX_VALUE))
         );
 
         getContentPane().add(topNav, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1001, 106));
@@ -293,7 +292,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             .addGap(0, 112, Short.MAX_VALUE)
         );
 
-        getContentPane().add(relleno, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1001, 112));
+        getContentPane().add(relleno, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1001, -1));
 
         contenido.setUI(new BasicTabbedPaneUI() {
             @Override
@@ -378,10 +377,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             pastButton.setBackground(new java.awt.Color(51, 51, 51));
         
         pastButton = mascotasButton;
-        if (contenido.getSelectedIndex() == 1) {
-            PanelMascotas panelMascotas = (PanelMascotas) contenido.getComponentAt(1);
-            panelMascotas.consultarDatosEnBaseDeDatos();
-        }
+        
+        contenido.setComponentAt(1, panelExternoMasc);
+        panelExternoMasc.consultarDatosEnBaseDeDatos();
     }//GEN-LAST:event_mascotasButtonActionPerformed
 
     private void mainButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mainButtonMouseClicked

@@ -1,5 +1,6 @@
 package aplicacion.veterinaria.GUI;
 import aplicacion.veterinaria.*;
+import java.awt.event.KeyEvent;
 import java.sql.*;
 
 public class VentanaCodigoConfirmadoExitosamente extends javax.swing.JFrame {
@@ -226,15 +227,24 @@ public class VentanaCodigoConfirmadoExitosamente extends javax.swing.JFrame {
     //Input nueva contraseña
     private boolean borrado = false;
     private void newPassInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_newPassInputKeyTyped
-         if(!borrado){
+        char c = evt.getKeyChar();
+        if (c == '\n') {
+            confirmarMouseClicked(null);
+        }
+        if(!borrado){
              
             newPassInput.setText("");
             borrado = true;
         }
+         
     }//GEN-LAST:event_newPassInputKeyTyped
     //Input confirmar contraseña
     private boolean borrado2 = false;
     private void confirmarPassInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_confirmarPassInputKeyTyped
+        char c = evt.getKeyChar();
+        if (c == '\n') {
+            confirmarMouseClicked(null);
+        }
         if(!borrado2){
              
             confirmarPassInput.setText("");

@@ -1,6 +1,7 @@
 package aplicacion.veterinaria.GUI;
 
 import aplicacion.veterinaria.*;
+import java.awt.event.KeyEvent;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -64,7 +65,7 @@ public class VentanaLogin extends javax.swing.JFrame {
             }
         });
 
-        imgLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/aplicacion/veterinaria/GUI/img/LogoLogoResized.png"))); // NOI18N
+        imgLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/aplicacion/veterinaria/GUI/img/PetCare-150.png"))); // NOI18N
 
         contraseniaOlvidada.setForeground(new java.awt.Color(210, 210, 210));
         contraseniaOlvidada.setText("¿Olvidaste tu contraseña?");
@@ -106,7 +107,7 @@ public class VentanaLogin extends javax.swing.JFrame {
         loginLayout.setHorizontalGroup(
             loginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(loginLayout.createSequentialGroup()
-                .addContainerGap(26, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(loginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, loginLayout.createSequentialGroup()
                         .addGroup(loginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -152,7 +153,7 @@ public class VentanaLogin extends javax.swing.JFrame {
                 .addComponent(contraseniaOlvidada)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(registerButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(69, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout panelLoginLayout = new javax.swing.GroupLayout(panelLogin);
@@ -160,22 +161,23 @@ public class VentanaLogin extends javax.swing.JFrame {
         panelLoginLayout.setHorizontalGroup(
             panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLoginLayout.createSequentialGroup()
-                .addContainerGap(100, Short.MAX_VALUE)
+                .addContainerGap(111, Short.MAX_VALUE)
                 .addComponent(login, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(56, 56, 56))
+                .addGap(65, 65, 65))
         );
         panelLoginLayout.setVerticalGroup(
             panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLoginLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(login, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(panelLoginLayout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addComponent(login, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         setVisible(true);
         revalidate();
         repaint();
 
-        getContentPane().add(panelLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 420, -1));
+        getContentPane().add(panelLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 420, 520));
 
         pack();
         setLocationRelativeTo(null);
@@ -243,9 +245,14 @@ public class VentanaLogin extends javax.swing.JFrame {
     private boolean borradoCedula = false;
     private void cedulaInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cedulaInputKeyTyped
         char c = evt.getKeyChar();
+        if (c == '\n') {
+            loginButtonActionPerformed(null);
+        }
+        
         if (!Character.isDigit(c)) {
             evt.consume(); // No permite ingresar el carácter no numérico
         }
+        
         if (!borradoCedula) {
             cedulaInput.setText("");
         }
@@ -257,6 +264,10 @@ public class VentanaLogin extends javax.swing.JFrame {
             contraseniaInput.setText("");
         }
         borradoContra = true;
+        char c = evt.getKeyChar();
+        if (c == '\n') {
+            loginButtonActionPerformed(null);
+        }
     }//GEN-LAST:event_contraseniaInputKeyTyped
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

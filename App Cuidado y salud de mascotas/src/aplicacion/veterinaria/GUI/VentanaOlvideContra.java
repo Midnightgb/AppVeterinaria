@@ -4,7 +4,11 @@ import java.util.Random;
 import javax.mail.*;
 import java.util.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
@@ -12,6 +16,7 @@ public class VentanaOlvideContra extends javax.swing.JFrame {
 
     public VentanaOlvideContra() {
         initComponents();
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -127,6 +132,10 @@ public class VentanaOlvideContra extends javax.swing.JFrame {
     }//GEN-LAST:event_cancelarButtonMouseClicked
     private boolean borrado = false;
     private void cedulaBuscarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cedulaBuscarKeyTyped
+        char c = evt.getKeyChar();
+        if (c == '\n') {
+            buscarButtonMouseClicked(null);
+        }
         if (!borrado)
             cedulaBuscar.setText("");
             borrado = true;
@@ -145,7 +154,15 @@ public class VentanaOlvideContra extends javax.swing.JFrame {
             } else {
                 String codigo = generarCodigo();
                 String correo = obtenerCorreo(cedulaInt);
-                boolean envio = enviarCodigo(correo, codigo);
+                String mensaje = "Su codigo de autenticacion es : <b style='font-size:16px;'>"+codigo+"</b>"
+                        + "<br><br><br>Atentamente,<br>"
+                        + "Equipo de <b>PetCare</b>";
+                boolean envio = false;
+                try {
+                    envio = Herramientas.enviarCorreo(correo, "Codigo de verificacion ", mensaje);
+                } catch (IOException ex) {
+                    Logger.getLogger(VentanaOlvideContra.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 if (envio) {
                     VentanaConfirmarCodigo confirmacion = new VentanaConfirmarCodigo(codigo, cedulaInt);
                     confirmacion.setVisible(true);
@@ -179,18 +196,13 @@ public class VentanaOlvideContra extends javax.swing.JFrame {
             return false;
         }
     }
-
     
-    
-    //Generar código aleatorio
     private String generarCodigo() {
         Random numero = new Random();
         int codigo = numero.nextInt(9000) + 1000;
         return Integer.toString(codigo);
     }
     
-    
-    //Obtener correo del usuario
     private String obtenerCorreo(int cedula) {
     String correo = "";
 
@@ -216,42 +228,6 @@ public class VentanaOlvideContra extends javax.swing.JFrame {
 
     return correo;
 }
-    
-    
-    private boolean enviarCodigo(String correo, String codigo) {
-        
-        Properties propiedades= new Properties();
-        propiedades.put("mail.smtp.auth", "true");
-        propiedades.put("mail.smtp.starttls.enable", "true"); // Habilitar TLS
-        propiedades.put("mail.smtp.host", "smtp.gmail.com"); // Servidor SMTP de Gmail
-        propiedades.put("mail.smtp.port", "587"); // Puerto para TLS
-
-        // Crear una sesión de correo con autenticación
-        Session sesion = Session.getInstance(propiedades, new Authenticator() {
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("correocomunidadjava@gmail.com", "mvmh jlhv ziby ioih");
-            }
-        }); 
-
-        try {
-            //Crear mensaje del correo
-            Message mensaje = new MimeMessage(sesion);
-            mensaje.setFrom(new InternetAddress("correocomunidadjava@gmail.com")); // Remitente
-            mensaje.setRecipient(Message.RecipientType.TO, new InternetAddress(correo)); // Destinatario
-            mensaje.setSubject("Código de verificación"); // Asunto
-            mensaje.setText("Tu código de verificación es: " + codigo); // Cuerpo del mensaje
-
-            //Enviar el mensaje de correo
-            Transport.send(mensaje);
-            return true;
-            
-        } catch (MessagingException e) {
-            e.printStackTrace();
-            return false; // Ocurrió un error al enviar el correo
-        }
-    }
-
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buscarButton;

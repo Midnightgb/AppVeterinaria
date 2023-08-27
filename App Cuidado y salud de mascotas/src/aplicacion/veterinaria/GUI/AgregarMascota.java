@@ -45,8 +45,6 @@ public class AgregarMascota extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         imagenLabel = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -65,12 +63,22 @@ public class AgregarMascota extends javax.swing.JFrame {
         nombreMascota.setText("pepito");
         nombreMascota.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 1));
         nombreMascota.setCaretColor(new java.awt.Color(255, 255, 255));
+        nombreMascota.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                nombreMascotaKeyTyped(evt);
+            }
+        });
 
         razaMascota.setBackground(new java.awt.Color(90, 90, 90));
         razaMascota.setForeground(new java.awt.Color(210, 210, 210));
         razaMascota.setText("Cocodrilo 🐊");
         razaMascota.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 1));
         razaMascota.setCaretColor(new java.awt.Color(255, 255, 255));
+        razaMascota.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                razaMascotaKeyTyped(evt);
+            }
+        });
 
         textRaza.setFont(new java.awt.Font("Source Code Pro", 0, 12)); // NOI18N
         textRaza.setForeground(new java.awt.Color(210, 210, 210));
@@ -82,6 +90,11 @@ public class AgregarMascota extends javax.swing.JFrame {
         edadMascota.setText("150");
         edadMascota.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 15, 1, 1));
         edadMascota.setCaretColor(new java.awt.Color(255, 255, 255));
+        edadMascota.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                edadMascotaKeyTyped(evt);
+            }
+        });
 
         edadText.setFont(new java.awt.Font("Source Code Pro", 0, 12)); // NOI18N
         edadText.setForeground(new java.awt.Color(210, 210, 210));
@@ -161,17 +174,16 @@ public class AgregarMascota extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(210, 210, 210));
         jLabel2.setText("Genero:");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jTextArea1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        jScrollPane2.setViewportView(jTextArea1);
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(158, 158, 158)
+                .addComponent(jLabel1)
+                .addContainerGap(162, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(116, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(panelPreview, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -179,7 +191,7 @@ public class AgregarMascota extends javax.swing.JFrame {
                         .addComponent(btnLoadImage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                             .addComponent(cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnUploadImage, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(textRaza, javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
@@ -189,19 +201,10 @@ public class AgregarMascota extends javax.swing.JFrame {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel2)
-                                .addComponent(genero, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(genero, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addComponent(textNombre)
                     .addComponent(nombreMascota, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(104, 104, 104))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(158, 158, 158)
-                        .addComponent(jLabel1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(100, 100, 100))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -209,8 +212,6 @@ public class AgregarMascota extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
                 .addComponent(textNombre)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(nombreMascota, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -234,7 +235,7 @@ public class AgregarMascota extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnUploadImage, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(32, 32, 32))
+                .addGap(147, 147, 147))
         );
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 670));
@@ -272,13 +273,11 @@ public class AgregarMascota extends javax.swing.JFrame {
                 ImageIO.write(image, "png", baos);
                 byte[] imageData = baos.toByteArray();
 
-                // Obtener otros datos de los campos de la interfaz
                 String nombre = nombreMascota.getText();
                 String raza = razaMascota.getText();
                 int edad = Integer.parseInt(edadMascota.getText());
-                String generoSeleccionado  = (String) genero.getSelectedItem(); // Obtener el género seleccionado
+                String generoSeleccionado  = (String) genero.getSelectedItem();
 
-                // Guardar los datos en la base de datos
                 guardarDatosEnBaseDeDatos(nombre, raza, edad, generoSeleccionado , imageData);
 
                 setVisible(false);
@@ -291,6 +290,31 @@ public class AgregarMascota extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnUploadImageMousePressed
 
+    private boolean borradoNombre;
+    private void nombreMascotaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombreMascotaKeyTyped
+        if (!nombreMascota.getText().isEmpty() && !borradoNombre) {
+            nombreMascota.setText("");
+            borradoNombre = true;
+        }
+    }//GEN-LAST:event_nombreMascotaKeyTyped
+    private boolean borradoRaza;
+    private void razaMascotaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_razaMascotaKeyTyped
+        if (!razaMascota.getText().isEmpty() && !borradoRaza) {
+            razaMascota.setText("");
+            borradoRaza = true;
+        }
+    }//GEN-LAST:event_razaMascotaKeyTyped
+    private boolean borradoEdad;
+    private void edadMascotaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edadMascotaKeyTyped
+        if (!edadMascota.getText().isEmpty() && !borradoEdad) {
+            edadMascota.setText("");
+            borradoEdad = true;
+        }
+    }//GEN-LAST:event_edadMascotaKeyTyped
+
+
+
+
     private void guardarDatosEnBaseDeDatos(String nombre, String raza, int edad, String genero, byte[] imagenData) {
         try {
             DataBase db = new DataBase();
@@ -298,7 +322,7 @@ public class AgregarMascota extends javax.swing.JFrame {
             System.out.println(cedula);
             int cedulaInt = Integer.parseInt(cedula);
             int id_user = Herramientas.obtenerIdUsuarioPorDocumento(cedulaInt);
-            // Insertar datos en la tabla de mascotas
+
             String insertQuery = "INSERT INTO mascotas (nombre, raza, edad, genero, usuario, imagen) VALUES (?, ?, ?, ?, ?,?)";
             PreparedStatement insertStatement = conn.prepareStatement(insertQuery);
             insertStatement.setString(1, nombre);
@@ -347,8 +371,6 @@ public class AgregarMascota extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField nombreMascota;
     private javax.swing.JPanel panelPreview;
     private javax.swing.JTextField razaMascota;

@@ -1,6 +1,10 @@
 package aplicacion.veterinaria.GUI;
 import aplicacion.veterinaria.*;
+import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class VentanaRegister extends javax.swing.JFrame {
 
@@ -39,7 +43,7 @@ public class VentanaRegister extends javax.swing.JFrame {
         setResizable(false);
         panelMain.setBackground(new java.awt.Color(43, 43, 43));
 
-        img.setIcon(new javax.swing.ImageIcon(getClass().getResource("/aplicacion/veterinaria/GUI/img/LogoLogoResized.png"))); // NOI18N
+        img.setIcon(new javax.swing.ImageIcon(getClass().getResource("/aplicacion/veterinaria/GUI/img/PetCare-150.png"))); // NOI18N
 
         form.setBackground(new java.awt.Color(43, 43, 43));
 
@@ -286,12 +290,30 @@ public class VentanaRegister extends javax.swing.JFrame {
                         VentanaLogin login = new VentanaLogin();
                         setVisible(false);
                         Herramientas.error("Usuario registrado exitosamente.",true);
+                        String asunto = "¡Bienvenido a PetCare - Tu Plataforma para el Cuidado de Mascotas!";
+                        String mensaje = "<h2 style='color:#1E1E1E;'>Estimad@ "+ nombre +",</h2>" +
+                                        "Es un placer darte la bienvenida a <b>PetCare</b>, la plataforma diseñada para cuidar a tus mascotas de una manera sencilla y efectiva. Estamos emocionados de que te hayas unido a nuestra comunidad de amantes de los animales y esperamos que disfrutes de todas las funciones que <b>PetCare</b> tiene para ofrecer.\n" +
+                                        "<p>Hemos creado tu cuenta con los siguientes detalles:</p>" +
+                                        "<br><b>Datos para iniciar sesion: "+ cedula +"</b>" +
+                                        "<br><b>Correo Electrónico: "+ correo +"</b>" +
+                                        "<br><br>Con <b>PetCare</b>, podrás:\n" +
+                                        "<br><b>1.</b> Registrar a tus mascotas y mantener un registro detallado de sus actividades diarias.\n" +
+                                        "<br><b>2.</b> Agregar notas de las actividades realizadas por tus mascotas, como paseos, juegos y más.\n" +
+                                        "<br><b>3.</b> Llevar un registro médico completo, incluyendo citas veterinarias, tratamientos y medicamentos.\n" +
+                                        "<br><b>4.</b> Establecer dietas personalizadas para cada mascota y mantener un seguimiento de su alimentación.\n" +
+                                        "<br><br><br>Para comenzar, te recomendamos iniciar sesión con tus credenciales y explorar todas las características intuitivas que hemos preparado para ti.\n" +
+                                        "<br><br>Queremos que tu experiencia con PetCare sea excepcional y que sientas la tranquilidad de cuidar a tus mascotas de la mejor manera posible. ¡Gracias por unirte a nuestra comunidad!\n" +
+                                        "<br><br><br>Saludos cordiales,<br>" +
+                                        "Equipo de <b>PetCare</b>";
+                        Herramientas.enviarCorreo(correo, asunto, mensaje);
                     } else {
                         Herramientas.error("No se pudo registrar el usuario.",false);
                     }
 
                 } catch (SQLException ex) {
                     System.out.println("Error al insertar usuario: " + ex.getMessage());
+                } catch (IOException ex) {
+                    Logger.getLogger(VentanaRegister.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
                 // Cerrar la conexión

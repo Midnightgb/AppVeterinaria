@@ -1,5 +1,6 @@
 package aplicacion.veterinaria.GUI;
 import aplicacion.veterinaria.Herramientas;
+import java.awt.event.KeyEvent;
 import javax.swing.JTextField;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
@@ -44,6 +45,11 @@ public class VentanaConfirmarCodigo extends javax.swing.JFrame {
         primerDigito.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         primerDigito.setBorder(null);
         primerDigito.setCaretColor(new java.awt.Color(255, 255, 255));
+        primerDigito.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                primerDigitoKeyPressed(evt);
+            }
+        });
 
         segundoDigito.setBackground(new java.awt.Color(90, 90, 90));
         segundoDigito.setFont(new java.awt.Font("Segoe UI", 0, 48)); // NOI18N
@@ -51,6 +57,11 @@ public class VentanaConfirmarCodigo extends javax.swing.JFrame {
         segundoDigito.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         segundoDigito.setBorder(null);
         segundoDigito.setCaretColor(new java.awt.Color(255, 255, 255));
+        segundoDigito.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                segundoDigitoKeyPressed(evt);
+            }
+        });
 
         tercerDigito.setBackground(new java.awt.Color(90, 90, 90));
         tercerDigito.setFont(new java.awt.Font("Segoe UI", 0, 48)); // NOI18N
@@ -58,6 +69,11 @@ public class VentanaConfirmarCodigo extends javax.swing.JFrame {
         tercerDigito.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         tercerDigito.setBorder(null);
         tercerDigito.setCaretColor(new java.awt.Color(255, 255, 255));
+        tercerDigito.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tercerDigitoKeyPressed(evt);
+            }
+        });
 
         cuartoDigito.setBackground(new java.awt.Color(90, 90, 90));
         cuartoDigito.setFont(new java.awt.Font("Segoe UI", 0, 48)); // NOI18N
@@ -65,6 +81,11 @@ public class VentanaConfirmarCodigo extends javax.swing.JFrame {
         cuartoDigito.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         cuartoDigito.setBorder(null);
         cuartoDigito.setCaretColor(new java.awt.Color(255, 255, 255));
+        cuartoDigito.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cuartoDigitoKeyPressed(evt);
+            }
+        });
 
         textoAyuda.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         textoAyuda.setForeground(new java.awt.Color(255, 255, 255));
@@ -211,12 +232,39 @@ public class VentanaConfirmarCodigo extends javax.swing.JFrame {
         }
         
         if(estado){
-            Herramientas.error("confirmar codigo",false);
             VentanaCodigoConfirmadoExitosamente confirmado = new VentanaCodigoConfirmadoExitosamente(cedula);
             confirmado.setVisible(true);
             setVisible(false);
         }
     }//GEN-LAST:event_confirmarMouseClicked
+
+    private void cuartoDigitoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cuartoDigitoKeyPressed
+        char c = evt.getKeyChar();
+        if (c == '\n') {
+            confirmarMouseClicked(null);
+        }
+    }//GEN-LAST:event_cuartoDigitoKeyPressed
+
+    private void tercerDigitoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tercerDigitoKeyPressed
+        char c = evt.getKeyChar();
+        if (c == '\n') {
+            confirmarMouseClicked(null);
+        }
+    }//GEN-LAST:event_tercerDigitoKeyPressed
+
+    private void segundoDigitoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_segundoDigitoKeyPressed
+        char c = evt.getKeyChar();
+        if (c == '\n') {
+            confirmarMouseClicked(null);
+        }
+    }//GEN-LAST:event_segundoDigitoKeyPressed
+
+    private void primerDigitoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_primerDigitoKeyPressed
+        char c = evt.getKeyChar();
+        if (c == '\n') {
+            confirmarMouseClicked(null);
+        }
+    }//GEN-LAST:event_primerDigitoKeyPressed
 
 
 

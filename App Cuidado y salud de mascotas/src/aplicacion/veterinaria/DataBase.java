@@ -19,8 +19,6 @@ public class DataBase {
         try {
             this.conexion = DriverManager.getConnection(url, user_name, password);
             this.manipularDB = this.conexion.createStatement();
-            System.out.println("Conexion a DataBase Exitosa.");
-            
         } catch (SQLException ex) {
             System.out.println("Error en conexion a base de dato: "+ex.getMessage());
         }
