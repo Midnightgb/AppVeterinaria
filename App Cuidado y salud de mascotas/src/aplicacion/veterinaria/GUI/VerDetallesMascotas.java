@@ -21,6 +21,7 @@ public class VerDetallesMascotas extends javax.swing.JPanel {
     private DataBase db = new DataBase();
     private Connection conn = db.getConexion();
     private String id_mascota;
+    
     public VerDetallesMascotas(String cedula, JTabbedPane contenido, String id_mascota) {
         this.id_mascota = id_mascota;
         this.contenido = contenido;
@@ -184,6 +185,11 @@ public class VerDetallesMascotas extends javax.swing.JPanel {
         editarImagen.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         editarImagen.setEnabled(false);
         editarImagen.setFocusPainted(false);
+        editarImagen.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                editarImagenMouseClicked(evt);
+            }
+        });
         panelDetalles.add(editarImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 133, 30, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -194,7 +200,7 @@ public class VerDetallesMascotas extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelDetalles, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panelDetalles, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
         );
 
         panelDetalles.setFocusable(true);
@@ -218,6 +224,7 @@ public class VerDetallesMascotas extends javax.swing.JPanel {
     }//GEN-LAST:event_irAtrasActionPerformed
 
     private void guardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guardarMouseClicked
+        if (guardar.isEnabled())
         try {
             String nombre = nombreMascota.getText();
             String raza = razaMascota.getText();
@@ -252,6 +259,16 @@ public class VerDetallesMascotas extends javax.swing.JPanel {
         String input = nombreMascota.getText();
         nombredMascota.setText(input);
     }//GEN-LAST:event_nombreMascotaKeyReleased
+
+    private void editarImagenMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editarImagenMouseClicked
+        if (editarImagen.isEnabled()){
+            String nombreMascota = nombredMascota.getText();
+            System.out.println("editar imagen de "+nombreMascota);
+            CambiarImagenMascota modificarImg = new CambiarImagenMascota(cedula, nombreMascota, id_mascota);
+            modificarImg.setVisible(true);
+            modificarImg.setResizable(false);
+        }
+    }//GEN-LAST:event_editarImagenMouseClicked
     
     public void cargarDetallesMascota() {
         try {
@@ -279,10 +296,8 @@ public class VerDetallesMascotas extends javax.swing.JPanel {
                 ImageIcon imagenRedimensionadaIcono = new ImageIcon(imagenRedimensionada);
                 imgMascota.setIcon(imagenRedimensionadaIcono);
             }
-            // Cerrar recursos
             resultSet.close();
             selectStatement.close();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }

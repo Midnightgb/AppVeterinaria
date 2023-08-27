@@ -8,6 +8,11 @@ public class PanelMascotas extends javax.swing.JPanel {
 
     private String cedula;
     private JTabbedPane contenido;
+    private DataBase db = new DataBase();
+    private Connection conn = db.getConexion();
+    private int currentPage = 0;
+    private int itemsPerPage = 8; // Cantidad de mascotas por página
+
     public PanelMascotas(String cedula, JTabbedPane contenido) {
         System.out.println(cedula);
         this.cedula = cedula;
@@ -27,6 +32,8 @@ public class PanelMascotas extends javax.swing.JPanel {
         eliminarMascota1 = new javax.swing.JButton();
         verDetallesMascota1 = new javax.swing.JButton();
         imgMascota1 = new javax.swing.JLabel();
+        prevPageButton = new javax.swing.JButton();
+        nextPageButton = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(43, 43, 43));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -118,6 +125,30 @@ public class PanelMascotas extends javax.swing.JPanel {
         listaMascotas.add(mascota1, gridBagConstraints);
 
         add(listaMascotas, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 75, 827, -1));
+
+        prevPageButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/aplicacion/veterinaria/GUI/img/flecha-izquierda.png"))); // NOI18N
+        prevPageButton.setBorder(null);
+        prevPageButton.setBorderPainted(false);
+        prevPageButton.setContentAreaFilled(false);
+        prevPageButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        prevPageButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                prevPageButtonActionPerformed(evt);
+            }
+        });
+        add(prevPageButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 30, 30, 30));
+
+        nextPageButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/aplicacion/veterinaria/GUI/img/icons8-chevron-derecha-en-círculo-48.png"))); // NOI18N
+        nextPageButton.setBorder(null);
+        nextPageButton.setBorderPainted(false);
+        nextPageButton.setContentAreaFilled(false);
+        nextPageButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        nextPageButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nextPageButtonActionPerformed(evt);
+            }
+        });
+        add(nextPageButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 30, 30, 30));
     }// </editor-fold>//GEN-END:initComponents
 
     private void addMascotaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addMascotaMousePressed
@@ -126,6 +157,18 @@ public class PanelMascotas extends javax.swing.JPanel {
         add.setVisible(true);
         consultarDatosEnBaseDeDatos();
     }//GEN-LAST:event_addMascotaMousePressed
+
+    private void nextPageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextPageButtonActionPerformed
+        currentPage++;
+        consultarDatosEnBaseDeDatos();
+    }//GEN-LAST:event_nextPageButtonActionPerformed
+
+    private void prevPageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevPageButtonActionPerformed
+        if (currentPage > 0) {
+            currentPage--;
+            consultarDatosEnBaseDeDatos();
+        }
+    }//GEN-LAST:event_prevPageButtonActionPerformed
     
     private void eliminarMascotaMouseClicked(java.awt.event.MouseEvent evt) {                                              
         JButton btn = (JButton) evt.getSource();
@@ -141,8 +184,6 @@ public class PanelMascotas extends javax.swing.JPanel {
     
     public void consultarDatosEnBaseDeDatos() {
         try {
-            DataBase db = new DataBase();
-            Connection conn = db.getConexion();
             int cedulaInt = Integer.parseInt(cedula);
             int id_user = Herramientas.obtenerIdUsuarioPorDocumento(cedulaInt);
             String selectQuery = "SELECT * FROM mascotas WHERE usuario = ?";
@@ -153,35 +194,56 @@ public class PanelMascotas extends javax.swing.JPanel {
 
             listaMascotas.removeAll();
             
+
+            
+            int startIndex = currentPage * itemsPerPage;
+            int endIndex = startIndex + itemsPerPage;
+
             int gridWidth = 4;
             int gridHeight = 2;
 
             int row = 0;
             int col = 0;
-            
-            while (resultSet.next()) {
-                String id_mascota = resultSet.getString("id_mascota");
-                byte[] imagenData = resultSet.getBytes("imagen");
-                JPanel mascotaPanel = crearPanelMascota(id_mascota, imagenData);
-                
-                GridBagConstraints gbc = new GridBagConstraints();
-                gbc.gridx = col;
-                gbc.gridy = row;
-                gbc.ipadx = 17;
-                gbc.ipady = 5;
-                gbc.anchor = java.awt.GridBagConstraints.NORTHWEST;
-                gbc.insets = new java.awt.Insets(10, 25, 30, 35);
-                listaMascotas.add(mascotaPanel, gbc);
 
-                col++;
-                if (col >= gridWidth) {
-                    col = 0;
-                    row++;
+            int counter = 0;
+            
+            int totalItems = 0;
+            while (resultSet.next()) {
+                totalItems++;
+                if (counter >= startIndex && counter < endIndex) {
+                    String id_mascota = resultSet.getString("id_mascota");
+                    byte[] imagenData = resultSet.getBytes("imagen");
+                    JPanel mascotaPanel = crearPanelMascota(id_mascota, imagenData);
+
+                    GridBagConstraints gbc = new GridBagConstraints();
+                    gbc.gridx = col;
+                    gbc.gridy = row;
+                    gbc.ipadx = 17;
+                    gbc.ipady = 5;
+                    gbc.anchor = java.awt.GridBagConstraints.NORTHWEST;
+                    gbc.insets = new java.awt.Insets(10, 25, 30, 35);
+                    listaMascotas.add(mascotaPanel, gbc);
+
+                    col++;
+                    if (col >= gridWidth) {
+                        col = 0;
+                        row++;
+                    }
                 }
-                if (row >= gridHeight) {
-                    break; 
+
+                counter++;
+
+                if (counter >= endIndex) {
+                    break;
                 }
             }
+            int totalPages = (totalItems + itemsPerPage - 2) / itemsPerPage; // Cálculo de páginas totales
+            System.out.println("Total pag "+totalPages);
+            System.out.println("pag act "+currentPage);
+
+            // Actualizar visibilidad de botones de navegación
+            nextPageButton.setVisible(currentPage < totalPages);
+            prevPageButton.setVisible(currentPage > 0);
             
             listaMascotas.revalidate();
             listaMascotas.repaint();
@@ -194,6 +256,7 @@ public class PanelMascotas extends javax.swing.JPanel {
             e.printStackTrace();
         }
     }
+
 
     private JPanel crearPanelMascota(String id_mascota, byte[] imagenData) {
         JPanel mascotaPanel = new JPanel();
@@ -221,7 +284,6 @@ public class PanelMascotas extends javax.swing.JPanel {
                 eliminarMascotaMouseClicked(evt);
             }
         });
-        System.out.println(id_mascota);
         
         verDetallesMascota.setBackground(new java.awt.Color(60, 63, 65));
         verDetallesMascota.setFont(new java.awt.Font("Source Code Pro", 0, 12)); // NOI18N
@@ -272,8 +334,6 @@ public class PanelMascotas extends javax.swing.JPanel {
 
     private void eliminarMascota(String idMascota) {
     try {
-        DataBase db = new DataBase();
-        Connection conn = db.getConexion();
         String deleteQuery = "DELETE FROM mascotas WHERE id_mascota = ?";
         PreparedStatement deleteStatement = conn.prepareStatement(deleteQuery);
         deleteStatement.setString(1, idMascota);
@@ -310,6 +370,8 @@ public class PanelMascotas extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel listaMascotas;
     private javax.swing.JPanel mascota1;
+    private javax.swing.JButton nextPageButton;
+    private javax.swing.JButton prevPageButton;
     private javax.swing.JButton verDetallesMascota1;
     // End of variables declaration//GEN-END:variables
 }

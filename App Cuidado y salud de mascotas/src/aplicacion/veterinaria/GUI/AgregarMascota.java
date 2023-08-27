@@ -17,6 +17,7 @@ import aplicacion.veterinaria.*;
 public class AgregarMascota extends javax.swing.JFrame {
     private String cedula;
     ImageIcon imagenTemporal;
+    
     public AgregarMascota(String cedula) {
         initComponents();
         imagenTemporal = null;
@@ -311,7 +312,6 @@ public class AgregarMascota extends javax.swing.JFrame {
             borradoEdad = true;
         }
     }//GEN-LAST:event_edadMascotaKeyTyped
-
 
 
 

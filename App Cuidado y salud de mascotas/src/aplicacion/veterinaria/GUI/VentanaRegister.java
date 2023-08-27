@@ -1,6 +1,5 @@
 package aplicacion.veterinaria.GUI;
 import aplicacion.veterinaria.*;
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.sql.*;
 import java.util.logging.Level;
