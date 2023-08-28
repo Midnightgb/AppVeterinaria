@@ -22,7 +22,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         panelExternoMasc = new PanelMascotas(cedula, contenido);
         contenido.addTab("tab2", panelExternoMasc);
         
-        PanelCardActividad panelExternoActividades = new PanelCardActividad();
+        PanelActividades panelExternoActividades = new PanelActividades();
         contenido.addTab("tab3", panelExternoActividades);
         
         PanelCardmedico panelExternoRegistroClinico = new PanelCardmedico();

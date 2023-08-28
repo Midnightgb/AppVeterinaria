@@ -257,7 +257,6 @@ public class PanelMascotas extends javax.swing.JPanel {
         }
     }
 
-
     private JPanel crearPanelMascota(String id_mascota, byte[] imagenData) {
         JPanel mascotaPanel = new JPanel();
         JButton eliminarMascota = new JButton();
