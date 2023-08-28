@@ -184,7 +184,7 @@ public class VentanaLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-        DataBase db = new DataBase(); // Crear instancia de DataBase
+        DataBase db = new DataBase();
         String cedula = cedulaInput.getText();
         String contrasena = new String(contraseniaInput.getPassword());
         boolean estadoCedula = true;

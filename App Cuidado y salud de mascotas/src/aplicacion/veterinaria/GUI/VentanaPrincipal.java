@@ -11,6 +11,8 @@ import javax.swing.plaf.basic.BasicTabbedPaneUI;
 public class VentanaPrincipal extends javax.swing.JFrame {
     
     private PanelMascotas panelExternoMasc;
+    private PanelActividades panelExternoActividades;
+    private PanelCardMedico panelExternoRegistroClinico;
     private JButton pastButton;
     private String cedula;
     public VentanaPrincipal(String cedula) {
@@ -22,14 +24,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         panelExternoMasc = new PanelMascotas(cedula, contenido);
         contenido.addTab("tab2", panelExternoMasc);
         
-        PanelActividades panelExternoActividades = new PanelActividades();
+        panelExternoActividades = new PanelActividades(cedula);
         contenido.addTab("tab3", panelExternoActividades);
         
-        PanelCardmedico panelExternoRegistroClinico = new PanelCardmedico();
+        panelExternoRegistroClinico = new PanelCardMedico(cedula);
         contenido.addTab("tab4", panelExternoRegistroClinico);
         
-        PanelCardDieta panelExternoDietas = new PanelCardDieta();
-        contenido.addTab("tab5", panelExternoDietas);
+
+        dietasButton.setVisible(false);
     }
 
     @SuppressWarnings("unchecked")
@@ -401,6 +403,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             pastButton.setBackground(new java.awt.Color(51, 51, 51));
         
         pastButton = activityButton;
+        panelExternoActividades.consultarActividades();
+
     }//GEN-LAST:event_activityButtonActionPerformed
 
     private void registroCliniButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registroCliniButtonActionPerformed
@@ -412,6 +416,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             pastButton.setBackground(new java.awt.Color(51, 51, 51));
         
         pastButton = registroCliniButton;
+        panelExternoRegistroClinico.consultarRegistros();
     }//GEN-LAST:event_registroCliniButtonActionPerformed
 
     private void mainButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mainButtonMouseEntered

@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -118,7 +120,6 @@ public abstract class Herramientas {
     try {
         DataBase db = new DataBase();
         Connection conn = db.getConexion();
-
         String selectQuery = "SELECT id_user FROM usuarios WHERE documento = ?";
         PreparedStatement selectStatement = conn.prepareStatement(selectQuery);
         selectStatement.setInt(1, documento);
@@ -206,4 +207,56 @@ public abstract class Herramientas {
         }
     }
 
+    public static int obtenerIdMascotaPorNombre (int idUser, String mascotaSeleccionada){
+    int idMascota = -1;
+    try {
+        DataBase db = new DataBase();
+        Connection conn = db.getConexion();
+        String selectQuery = "SELECT id_mascota FROM mascotas WHERE nombre = ?";
+        PreparedStatement selectStatement = conn.prepareStatement(selectQuery);
+        selectStatement.setString(1, mascotaSeleccionada);
+
+        ResultSet resultSet = selectStatement.executeQuery();
+
+        if (resultSet.next()) {
+            idMascota = resultSet.getInt("id_mascota");
+        }
+
+        resultSet.close();
+        selectStatement.close();
+        conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return idMascota;
+    }
+    
+    public static List<String> obtenerMascotasUsuario(int idUsuario) {
+        List<String> mascotasUsuario = new ArrayList<>();
+        
+        try {
+            DataBase db = new DataBase();
+            Connection conn = db.getConexion();
+            
+            String sql = "SELECT nombre FROM mascotas WHERE usuario = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setInt(1, idUsuario);
+            
+            ResultSet resultSet = preparedStatement.executeQuery();
+            
+            while (resultSet.next()) {
+                String nombreMascota = resultSet.getString("nombre");
+                mascotasUsuario.add(nombreMascota);
+            }
+            
+            resultSet.close();
+            preparedStatement.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return mascotasUsuario;
+    }
+    
 }

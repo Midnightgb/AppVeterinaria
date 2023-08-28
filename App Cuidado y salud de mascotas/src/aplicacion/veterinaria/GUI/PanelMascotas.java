@@ -193,9 +193,7 @@ public class PanelMascotas extends javax.swing.JPanel {
             ResultSet resultSet = selectStatement.executeQuery();
 
             listaMascotas.removeAll();
-            
 
-            
             int startIndex = currentPage * itemsPerPage;
             int endIndex = startIndex + itemsPerPage;
 
@@ -349,10 +347,10 @@ public class PanelMascotas extends javax.swing.JPanel {
         // Cerrar recursos
         deleteStatement.close();
 
-    } catch (SQLException e) {
-        e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
-}
     
     private void mostrarDetallesMascota(String id_mascota) {
         VerDetallesMascotas detallesMascotas = new VerDetallesMascotas(cedula, contenido, id_mascota);

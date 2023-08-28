@@ -27,6 +27,8 @@ public class VerDetallesMascotas extends javax.swing.JPanel {
         this.contenido = contenido;
         this.cedula = cedula;
         initComponents();
+        guardar.setVisible(false);
+        editarImagen.setVisible(false);
     }
 
     @SuppressWarnings("unchecked")
@@ -212,7 +214,9 @@ public class VerDetallesMascotas extends javax.swing.JPanel {
         razaMascota.setEnabled(true);
         edadMascota.setEnabled(true);
         genero.setEnabled(true);
+        guardar.setVisible(true);
         guardar.setEnabled(true);
+        editarImagen.setVisible(true);
         editarImagen.setEnabled(true);
     }//GEN-LAST:event_editarBotonActionPerformed
 
@@ -281,14 +285,14 @@ public class VerDetallesMascotas extends javax.swing.JPanel {
                 String nombre = resultSet.getString("nombre");
                 String raza = resultSet.getString("raza");
                 String edad = resultSet.getString("edad");
-                String genero = resultSet.getString("genero");
+                String generoMasc = resultSet.getString("genero");
                 byte[] imagenData = resultSet.getBytes("imagen");
 
                 nombredMascota.setText(nombre);
                 nombreMascota.setText(nombre);
                 razaMascota.setText(raza);
                 edadMascota.setText(edad);
-                //genero.setSelectedItem(genero);
+                genero.setSelectedItem(generoMasc);
 
                 ImageIcon imagenIcono = new ImageIcon(imagenData);
                 Image imagenOriginal = imagenIcono.getImage();
