@@ -20,7 +20,6 @@ public class PanelCardMedico extends javax.swing.JPanel {
     private String cedula;
     private int currentPage = 0;
     private int itemsPerPage = 2; // Cantidad de registros por página
-    private String nombreMascotatxt = "";
     
     public PanelCardMedico(String cedula) {
         this.cedula = cedula;
@@ -260,9 +259,9 @@ public class PanelCardMedico extends javax.swing.JPanel {
     }//GEN-LAST:event_mascotaAbuscarKeyTyped
 
     private void btnAddRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddRegistroActionPerformed
-        //AgregarActividad agregar = new AgregarActividad(cedula);
-        //agregar.setVisible(true);
-        //agregar.setResizable(false);
+        AgregarRegistro agregar = new AgregarRegistro(cedula);
+        agregar.setVisible(true);
+        agregar.setResizable(false);
     }//GEN-LAST:event_btnAddRegistroActionPerformed
 
     private void nextPageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextPageButtonActionPerformed
@@ -320,7 +319,7 @@ public class PanelCardMedico extends javax.swing.JPanel {
                     String idMascota = resultSet.getString("mascota");
                     String diagnostico = resultSet.getString("diagnostico");
                     String tratamiento = resultSet.getString("tratamiento");
-                    this.nombreMascotatxt = resultSet.getString("nombre_mascota");
+                    String nombreMascotatxt = resultSet.getString("nombre_mascota");
                     byte[] imagenData = resultSet.getBytes("imagen");
 
 
@@ -332,11 +331,7 @@ public class PanelCardMedico extends javax.swing.JPanel {
                     System.out.println("row "+row);
                     gbc.ipadx = 11;
                     gbc.anchor = GridBagConstraints.NORTHWEST;
-                    if (totalItems==1){
-                        gbc.insets = new Insets(0, 0, 234, 0);
-                    }else{
-                        gbc.insets = new Insets(20, 0, 0, 0);
-                    }
+                    gbc.insets = new Insets(20, 0, 0, 0);
                     gbc.fill = GridBagConstraints.NONE;
                     listaRegistros.add(cartaRegistros, gbc);
                     
@@ -392,7 +387,7 @@ public class PanelCardMedico extends javax.swing.JPanel {
     }
 
     private void mostrarDetallesRegistro(String idRegistro ){
-        VerDetallesRegistros detalles = new VerDetallesRegistros(idRegistro,nombreMascotatxt);
+        VerDetallesRegistros detalles = new VerDetallesRegistros(idRegistro);
         detalles.setVisible(true);
         detalles.setResizable(false);
     }

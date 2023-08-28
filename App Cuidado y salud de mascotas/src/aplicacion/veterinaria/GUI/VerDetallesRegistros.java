@@ -2,10 +2,9 @@
 package aplicacion.veterinaria.GUI;
 
 import aplicacion.veterinaria.*;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.awt.Image;
+import java.sql.*;
+import javax.swing.ImageIcon;
 
 
 public class VerDetallesRegistros extends javax.swing.JFrame {
@@ -13,13 +12,11 @@ public class VerDetallesRegistros extends javax.swing.JFrame {
     private DataBase db = new DataBase();
     private Connection conn = db.getConexion();
     private String idRegistro;
-    private String nombreMascotatxt;
     
-    public VerDetallesRegistros(String idRegistro, String nombreMascotatxt) {
+    public VerDetallesRegistros(String idRegistro) {
         this.idRegistro = idRegistro;
-        this.nombreMascotatxt = nombreMascotatxt;
         initComponents();
-        nombreMsc.setText(nombreMascotatxt);
+        getDetallesRegistro(idRegistro);
     }
 
 
@@ -111,9 +108,12 @@ public class VerDetallesRegistros extends javax.swing.JFrame {
         tratamientoOutput.setBackground(new java.awt.Color(51, 51, 51));
         tratamientoOutput.setColumns(20);
         tratamientoOutput.setFont(new java.awt.Font("Source Code Pro", 2, 14)); // NOI18N
+        tratamientoOutput.setForeground(new java.awt.Color(255, 255, 255));
         tratamientoOutput.setRows(5);
-        tratamientoOutput.setText("nada");
         tratamientoOutput.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 10, 10, 5));
+        tratamientoOutput.setCaretColor(new java.awt.Color(255, 255, 255));
+        tratamientoOutput.setDisabledTextColor(new java.awt.Color(204, 204, 204));
+        tratamientoOutput.setEnabled(false);
         jScrollPane1.setViewportView(tratamientoOutput);
 
         panelDetalleRegistro.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 351, 438, 101));
@@ -121,9 +121,12 @@ public class VerDetallesRegistros extends javax.swing.JFrame {
         diagnosticoOutput.setBackground(new java.awt.Color(51, 51, 51));
         diagnosticoOutput.setColumns(20);
         diagnosticoOutput.setFont(new java.awt.Font("Source Code Pro", 2, 14)); // NOI18N
+        diagnosticoOutput.setForeground(new java.awt.Color(255, 255, 255));
         diagnosticoOutput.setRows(5);
-        diagnosticoOutput.setText("nada");
         diagnosticoOutput.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 10, 10, 5));
+        diagnosticoOutput.setCaretColor(new java.awt.Color(255, 255, 255));
+        diagnosticoOutput.setDisabledTextColor(new java.awt.Color(204, 204, 204));
+        diagnosticoOutput.setEnabled(false);
         jScrollPane2.setViewportView(diagnosticoOutput);
 
         panelDetalleRegistro.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 222, 438, 101));
@@ -194,18 +197,44 @@ public class VerDetallesRegistros extends javax.swing.JFrame {
 
     public void getDetallesRegistro(String idRegistro){
     try {
-        String selectQuery = "SELECT * FROM registro_medico WHERE id_registro = ?";
+        System.out.println("cargar registro");
+        String selectQuery = "SELECT R.id_registro, R.mascota, R.fecha_registro, R.diagnostico, R.tratamiento, M.nombre AS nombre_mascota, M.imagen, M.raza, M.genero, M.edad " +
+             "FROM registro_medico R " +
+             "INNER JOIN mascotas M ON R.mascota = M.id_mascota " +
+             "WHERE R.id_registro = ?";
         PreparedStatement selectStatement = conn.prepareStatement(selectQuery);
         selectStatement.setString(1, idRegistro);
 
         ResultSet resultSet = selectStatement.executeQuery();
 
         if (resultSet.next()) {
-            String fechaRegistrotxt = resultSet.getString("fecha_registro");
             String idMascota = resultSet.getString("mascota");
+            String nombreMascota = resultSet.getString("nombre_mascota");
+            String raza = resultSet.getString("raza");
+            String genero = resultSet.getString("genero");
+            String edad = resultSet.getString("edad");
+            String fechaRegistrotxt = resultSet.getString("fecha_registro");
             String diagnostico = resultSet.getString("diagnostico");
             String tratamiento = resultSet.getString("tratamiento");
             byte[] imagenData = resultSet.getBytes("imagen");
+            
+            idMsc.setText(idMascota);
+            nombreMsc.setText(nombreMascota);
+            razaMsc.setText(raza);
+            generoMsc.setText(genero);
+            edadMsc.setText(edad);
+            fechaMsc.setText(fechaRegistrotxt);
+            diagnosticoOutput.setText(diagnostico);
+            tratamientoOutput.setText(tratamiento);
+            
+            ImageIcon imagenIcono = new ImageIcon(imagenData);
+            Image imagenOriginal = imagenIcono.getImage();
+            Image imagenRedimensionada = imagenOriginal.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+            ImageIcon imagenRedimensionadaIcono = new ImageIcon(imagenRedimensionada);
+            imgMsc.setIcon(imagenRedimensionadaIcono);
+            System.out.println(diagnostico);
+            System.out.println(tratamiento);
+
         }
 
         resultSet.close();
