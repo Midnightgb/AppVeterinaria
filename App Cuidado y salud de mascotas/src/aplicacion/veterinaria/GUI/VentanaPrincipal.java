@@ -17,7 +17,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private PanelCardMedico panelExternoRegistroClinico;
     private JButton pastButton;
     private String cedula;
-    private int contadorValue = 0;
+    
+    //index 0 = numero mascotas //  1 = numero actividades
+    private int contadores[] = {0,0,0,0};
 
     public VentanaPrincipal(String cedula) {
         initComponents();
@@ -36,10 +38,15 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         contenido.addTab("tab4", panelExternoRegistroClinico);
         
         
-        consultarCantidadMascotas();
-        String mascotasRegistradas = String.valueOf(contadorValue);
-        numeroDeMascotas.setText(mascotasRegistradas);
-
+        consultarDatos();
+        String contadoresString[] = new String[contadores.length];
+        for (int i = 0; i < contadores.length; i++) {
+            contadoresString[i] = String.valueOf(contadores[i]); 
+        }
+        numeroDeMascotas.setText(contadoresString[0]);
+        numeroActividades.setText(contadoresString[1]);
+        
+        
         dietasButton.setVisible(false);
     }
 
@@ -75,11 +82,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         registradastxt = new javax.swing.JLabel();
         numeral = new javax.swing.JLabel();
         numeroDeMascotas = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         cantidadMascotas1 = new javax.swing.JPanel();
         actvregistxt = new javax.swing.JLabel();
         actvRegistradasTxt = new javax.swing.JLabel();
         numeral1 = new javax.swing.JLabel();
         numeroActividades = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         relleno2 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -351,26 +360,33 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         numeroDeMascotas.setForeground(new java.awt.Color(255, 255, 255));
         numeroDeMascotas.setText("0");
 
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/aplicacion/veterinaria/GUI/img/mascotasGuardadas.png"))); // NOI18N
+
         javax.swing.GroupLayout cantidadMascotasLayout = new javax.swing.GroupLayout(cantidadMascotas);
         cantidadMascotas.setLayout(cantidadMascotasLayout);
         cantidadMascotasLayout.setHorizontalGroup(
             cantidadMascotasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(cantidadMascotasLayout.createSequentialGroup()
-                .addContainerGap(51, Short.MAX_VALUE)
-                .addComponent(numeral)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(numeroDeMascotas, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32))
             .addComponent(mascotastxt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(registradastxt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cantidadMascotasLayout.createSequentialGroup()
+                .addContainerGap(51, Short.MAX_VALUE)
+                .addGroup(cantidadMascotasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(cantidadMascotasLayout.createSequentialGroup()
+                        .addComponent(numeral)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(numeroDeMascotas, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(32, 32, 32))
         );
         cantidadMascotasLayout.setVerticalGroup(
             cantidadMascotasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cantidadMascotasLayout.createSequentialGroup()
-                .addContainerGap(74, Short.MAX_VALUE)
-                .addGroup(cantidadMascotasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(numeral, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(numeroDeMascotas))
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(cantidadMascotasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(numeral, javax.swing.GroupLayout.PREFERRED_SIZE, 36, Short.MAX_VALUE)
+                    .addComponent(numeroDeMascotas, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(mascotastxt)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -400,26 +416,33 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         numeroActividades.setForeground(new java.awt.Color(255, 255, 255));
         numeroActividades.setText("0");
 
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/aplicacion/veterinaria/GUI/img/imgActividad.png"))); // NOI18N
+
         javax.swing.GroupLayout cantidadMascotas1Layout = new javax.swing.GroupLayout(cantidadMascotas1);
         cantidadMascotas1.setLayout(cantidadMascotas1Layout);
         cantidadMascotas1Layout.setHorizontalGroup(
             cantidadMascotas1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(cantidadMascotas1Layout.createSequentialGroup()
-                .addContainerGap(51, Short.MAX_VALUE)
-                .addComponent(numeral1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(numeroActividades, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32))
             .addComponent(actvregistxt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(actvRegistradasTxt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(actvRegistradasTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cantidadMascotas1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(cantidadMascotas1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(cantidadMascotas1Layout.createSequentialGroup()
+                        .addComponent(numeral1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(numeroActividades, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(32, 32, 32))
         );
         cantidadMascotas1Layout.setVerticalGroup(
             cantidadMascotas1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cantidadMascotas1Layout.createSequentialGroup()
-                .addContainerGap(74, Short.MAX_VALUE)
-                .addGroup(cantidadMascotas1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(cantidadMascotas1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(numeral1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(numeroActividades))
+                    .addComponent(numeroActividades, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(actvregistxt)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -472,7 +495,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void consultarCantidadMascotas(){
+    private void consultarDatos(){
         try{
             int cedulaInt = Integer.parseInt(cedula);
             int id_user = Herramientas.obtenerIdUsuarioPorDocumento(cedulaInt);
@@ -482,11 +505,32 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             contadorAnimales.setInt(1, id_user);
             ResultSet contadorResult = contadorAnimales.executeQuery();
             if (contadorResult.next()) {
-                contadorValue = contadorResult.getInt(1);
-                System.out.println("CONTADOR: " + contadorValue);
+                contadores[0] = contadorResult.getInt(1);
+                System.out.println("CONTADOR: " + contadores[0]);
             } else {
                 System.out.println("No se encontró ningún resultado para el contador.");
             }
+            
+            String sqlActividades = "SELECT COUNT(*) AS total_actividades " +
+             "FROM actividades_diarias A " +
+             "INNER JOIN mascotas M ON A.mascota = M.id_mascota " +
+             "WHERE M.usuario = ? " +
+             "AND DATE(A.fecha_actividad) = CURDATE()";
+            PreparedStatement numeroActividadesUser = conn.prepareStatement(sqlActividades);
+            numeroActividadesUser.setInt(1, id_user);
+            ResultSet contadorActividades = numeroActividadesUser.executeQuery();
+            if (contadorActividades.next()) {
+                contadores[1] = contadorActividades.getInt(1);
+                System.out.println("CONTADOR: " + contadores[1]);
+            } else {
+                System.out.println("No se encontró ningún resultado para el contador.");
+            }
+            
+            
+            
+            
+            
+            
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -510,6 +554,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         System.out.println("Boton main");
         contenido.setSelectedIndex(0);
         mainButton.setBackground(new java.awt.Color(90, 90, 90));
+        consultarDatos();
+        String contadoresString[] = new String[contadores.length];
+        for (int i = 0; i < contadores.length; i++) {
+            contadoresString[i] = String.valueOf(contadores[i]); 
+        }
+        numeroDeMascotas.setText(contadoresString[0]);
+        numeroActividades.setText(contadoresString[1]);
+        
         
         if (pastButton!=mainButton)
             pastButton.setBackground(new java.awt.Color(51, 51, 51));
@@ -624,6 +676,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel currentUserText;
     private javax.swing.JButton dietasButton;
     private javax.swing.JPanel homePanel;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JButton mainButton;
     private javax.swing.JButton mascotasButton;
     private javax.swing.JLabel mascotastxt;
