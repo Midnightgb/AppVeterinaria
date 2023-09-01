@@ -1,19 +1,16 @@
 package aplicacion.veterinaria.GUI;
+import aplicacion.veterinaria.DataBase;
 import aplicacion.veterinaria.Herramientas;
 import java.util.Random;
-import javax.mail.*;
-import java.util.*;
-import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
+import javax.swing.ImageIcon;
 
 public class VentanaOlvideContra extends javax.swing.JFrame {
-
+    private DataBase db = new DataBase();
+    
     public VentanaOlvideContra() {
         initComponents();
         
@@ -33,6 +30,8 @@ public class VentanaOlvideContra extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(43, 43, 43));
+        setIconImage(new ImageIcon(getClass().getResource("/aplicacion/veterinaria/GUI/img/logo.png")).getImage());
+        setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         contraOlvidada.setBackground(new java.awt.Color(43, 43, 43));
@@ -41,7 +40,7 @@ public class VentanaOlvideContra extends javax.swing.JFrame {
         imgContraOlvidada.setIcon(new javax.swing.ImageIcon(getClass().getResource("/aplicacion/veterinaria/GUI/img/icons8-guard-dog-100.png"))); // NOI18N
 
         cedulaBuscar.setBackground(new java.awt.Color(43, 43, 43));
-        cedulaBuscar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        cedulaBuscar.setFont(new java.awt.Font("Source Code Pro", 0, 14)); // NOI18N
         cedulaBuscar.setForeground(new java.awt.Color(210, 210, 210));
         cedulaBuscar.setText("Ingresa tu cedula");
         cedulaBuscar.setBorder(null);
@@ -52,10 +51,11 @@ public class VentanaOlvideContra extends javax.swing.JFrame {
             }
         });
 
-        buscarButton.setBackground(new java.awt.Color(90, 90, 90));
-        buscarButton.setForeground(new java.awt.Color(210, 210, 210));
+        buscarButton.setBackground(new java.awt.Color(48, 119, 62));
+        buscarButton.setFont(new java.awt.Font("Source Code Pro", 1, 14)); // NOI18N
+        buscarButton.setForeground(new java.awt.Color(255, 255, 255));
         buscarButton.setText("Buscar");
-        buscarButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        buscarButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         buscarButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         buscarButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -63,10 +63,11 @@ public class VentanaOlvideContra extends javax.swing.JFrame {
             }
         });
 
-        cancelarButton.setBackground(new java.awt.Color(90, 90, 90));
-        cancelarButton.setForeground(new java.awt.Color(210, 210, 210));
+        cancelarButton.setBackground(new java.awt.Color(255, 107, 107));
+        cancelarButton.setFont(new java.awt.Font("Source Code Pro", 1, 14)); // NOI18N
+        cancelarButton.setForeground(new java.awt.Color(255, 255, 255));
         cancelarButton.setText("Cancelar");
-        cancelarButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        cancelarButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         cancelarButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         cancelarButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -74,6 +75,7 @@ public class VentanaOlvideContra extends javax.swing.JFrame {
             }
         });
 
+        textoAyuda.setFont(new java.awt.Font("Source Code Pro", 0, 12)); // NOI18N
         textoAyuda.setForeground(new java.awt.Color(255, 255, 255));
         textoAyuda.setText("Porfavor ingresa tu cedula para encontrar tu cuenta.");
 
@@ -81,7 +83,7 @@ public class VentanaOlvideContra extends javax.swing.JFrame {
         contraOlvidada.setLayout(contraOlvidadaLayout);
         contraOlvidadaLayout.setHorizontalGroup(
             contraOlvidadaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contraOlvidadaLayout.createSequentialGroup()
+            .addGroup(contraOlvidadaLayout.createSequentialGroup()
                 .addContainerGap(158, Short.MAX_VALUE)
                 .addGroup(contraOlvidadaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contraOlvidadaLayout.createSequentialGroup()
@@ -93,13 +95,13 @@ public class VentanaOlvideContra extends javax.swing.JFrame {
                             .addComponent(cedulaBuscar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(180, 180, 180))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contraOlvidadaLayout.createSequentialGroup()
-                        .addGroup(contraOlvidadaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(textoAyuda, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(contraOlvidadaLayout.createSequentialGroup()
-                                .addComponent(cancelarButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(101, 101, 101)
-                                .addComponent(buscarButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(141, 141, 141))))
+                        .addComponent(cancelarButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(101, 101, 101)
+                        .addComponent(buscarButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(141, 141, 141))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contraOlvidadaLayout.createSequentialGroup()
+                        .addComponent(textoAyuda)
+                        .addGap(78, 78, 78))))
         );
         contraOlvidadaLayout.setVerticalGroup(
             contraOlvidadaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -155,7 +157,7 @@ public class VentanaOlvideContra extends javax.swing.JFrame {
                 String codigo = generarCodigo();
                 String correo = obtenerCorreo(cedulaInt);
                 String mensaje = "Su codigo de autenticacion es : <b style='font-size:16px;'>"+codigo+"</b>"
-                        + "<br><br><br>Atentamente,<br>"
+                        + "<br><br><br>Atentamente<br>"
                         + "Equipo de <b>PetCare</b>";
                 boolean envio = false;
                 try {
@@ -175,10 +177,9 @@ public class VentanaOlvideContra extends javax.swing.JFrame {
     }//GEN-LAST:event_buscarButtonMouseClicked
     private boolean verificarUsuarioExistente(int cedula) {
         try {
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mascotas", "root", "");
 
             String query = "SELECT COUNT(*) FROM usuarios WHERE documento = ?";
-            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            PreparedStatement preparedStatement = db.getConexion().prepareStatement(query);
             preparedStatement.setInt(1, cedula);
             
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -187,7 +188,6 @@ public class VentanaOlvideContra extends javax.swing.JFrame {
 
             resultSet.close();
             preparedStatement.close();
-            conn.close();
 
             return count > 0;
 
@@ -207,10 +207,9 @@ public class VentanaOlvideContra extends javax.swing.JFrame {
     String correo = "";
 
     try {
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mascotas", "root", "");
 
         String consulta = "SELECT correo FROM usuarios WHERE documento = ?";
-        PreparedStatement preparedStatement = connection.prepareStatement(consulta);
+        PreparedStatement preparedStatement = db.getConexion().prepareStatement(consulta);
         preparedStatement.setInt(1, cedula);
 
         ResultSet resultado = preparedStatement.executeQuery();
@@ -220,7 +219,6 @@ public class VentanaOlvideContra extends javax.swing.JFrame {
 
         resultado.close();
         preparedStatement.close();
-        connection.close();
         
     } catch (SQLException e) {
         e.printStackTrace();

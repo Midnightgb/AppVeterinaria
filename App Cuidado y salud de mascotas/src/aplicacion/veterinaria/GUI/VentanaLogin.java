@@ -1,7 +1,6 @@
 package aplicacion.veterinaria.GUI;
 
 import aplicacion.veterinaria.*;
-import java.awt.event.KeyEvent;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -76,10 +75,11 @@ public class VentanaLogin extends javax.swing.JFrame {
             }
         });
 
-        loginButton.setBackground(new java.awt.Color(90, 90, 90));
-        loginButton.setForeground(new java.awt.Color(210, 210, 210));
+        loginButton.setBackground(new java.awt.Color(79, 147, 210));
+        loginButton.setFont(new java.awt.Font("Source Code Pro", 1, 14)); // NOI18N
+        loginButton.setForeground(new java.awt.Color(255, 255, 255));
         loginButton.setText("Ingresar");
-        loginButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        loginButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         loginButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         loginButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

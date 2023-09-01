@@ -10,14 +10,19 @@ import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
 public class VentanaPrincipal extends javax.swing.JFrame {
     
+    private DataBase db = new DataBase();
+    private Connection conn = db.getConexion();
     private PanelMascotas panelExternoMasc;
     private PanelActividades panelExternoActividades;
     private PanelCardMedico panelExternoRegistroClinico;
     private JButton pastButton;
     private String cedula;
+    private int contadorValue = 0;
+
     public VentanaPrincipal(String cedula) {
         initComponents();
         this.cedula = cedula;
+        
         currentUser.setText(cedula);
         pastButton = mainButton;
         
@@ -30,6 +35,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         panelExternoRegistroClinico = new PanelCardMedico(cedula);
         contenido.addTab("tab4", panelExternoRegistroClinico);
         
+        
+        consultarCantidadMascotas();
+        String mascotasRegistradas = String.valueOf(contadorValue);
+        numeroDeMascotas.setText(mascotasRegistradas);
 
         dietasButton.setVisible(false);
     }
@@ -61,8 +70,16 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         relleno = new javax.swing.JPanel();
         contenido = new javax.swing.JTabbedPane();
         homePanel = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        cantidadMascotas = new javax.swing.JPanel();
+        mascotastxt = new javax.swing.JLabel();
+        registradastxt = new javax.swing.JLabel();
+        numeral = new javax.swing.JLabel();
+        numeroDeMascotas = new javax.swing.JLabel();
+        cantidadMascotas1 = new javax.swing.JPanel();
+        actvregistxt = new javax.swing.JLabel();
+        actvRegistradasTxt = new javax.swing.JLabel();
+        numeral1 = new javax.swing.JLabel();
+        numeroActividades = new javax.swing.JLabel();
         relleno2 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -312,38 +329,123 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         homePanel.setBackground(new java.awt.Color(43, 43, 43));
 
-        jTextField1.setText("jTextField1");
-        jTextField1.setPreferredSize(new java.awt.Dimension(326, 30));
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
+        cantidadMascotas.setBackground(new java.awt.Color(51, 51, 51));
+        cantidadMascotas.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        cantidadMascotas.setPreferredSize(new java.awt.Dimension(200, 200));
 
-        jButton1.setText("Buscar");
-        jButton1.setMaximumSize(new java.awt.Dimension(70, 30));
-        jButton1.setMinimumSize(new java.awt.Dimension(70, 30));
-        jButton1.setPreferredSize(new java.awt.Dimension(70, 30));
+        mascotastxt.setFont(new java.awt.Font("Source Code Pro", 1, 18)); // NOI18N
+        mascotastxt.setForeground(new java.awt.Color(255, 255, 255));
+        mascotastxt.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        mascotastxt.setText("Mascotas");
+
+        registradastxt.setFont(new java.awt.Font("Source Code Pro", 1, 18)); // NOI18N
+        registradastxt.setForeground(new java.awt.Color(255, 255, 255));
+        registradastxt.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        registradastxt.setText("Registradas");
+
+        numeral.setFont(new java.awt.Font("Source Code Pro", 1, 36)); // NOI18N
+        numeral.setForeground(new java.awt.Color(255, 255, 255));
+        numeral.setText("#");
+
+        numeroDeMascotas.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        numeroDeMascotas.setForeground(new java.awt.Color(255, 255, 255));
+        numeroDeMascotas.setText("0");
+
+        javax.swing.GroupLayout cantidadMascotasLayout = new javax.swing.GroupLayout(cantidadMascotas);
+        cantidadMascotas.setLayout(cantidadMascotasLayout);
+        cantidadMascotasLayout.setHorizontalGroup(
+            cantidadMascotasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(cantidadMascotasLayout.createSequentialGroup()
+                .addContainerGap(51, Short.MAX_VALUE)
+                .addComponent(numeral)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(numeroDeMascotas, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32))
+            .addComponent(mascotastxt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(registradastxt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        cantidadMascotasLayout.setVerticalGroup(
+            cantidadMascotasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cantidadMascotasLayout.createSequentialGroup()
+                .addContainerGap(74, Short.MAX_VALUE)
+                .addGroup(cantidadMascotasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(numeral, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(numeroDeMascotas))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(mascotastxt)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(registradastxt)
+                .addGap(14, 14, 14))
+        );
+
+        cantidadMascotas1.setBackground(new java.awt.Color(51, 51, 51));
+        cantidadMascotas1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        cantidadMascotas1.setPreferredSize(new java.awt.Dimension(200, 200));
+
+        actvregistxt.setFont(new java.awt.Font("Source Code Pro", 1, 18)); // NOI18N
+        actvregistxt.setForeground(new java.awt.Color(255, 255, 255));
+        actvregistxt.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        actvregistxt.setText("Actividades");
+
+        actvRegistradasTxt.setFont(new java.awt.Font("Source Code Pro", 1, 18)); // NOI18N
+        actvRegistradasTxt.setForeground(new java.awt.Color(255, 255, 255));
+        actvRegistradasTxt.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        actvRegistradasTxt.setText("Realizadas Hoy");
+
+        numeral1.setFont(new java.awt.Font("Source Code Pro", 1, 36)); // NOI18N
+        numeral1.setForeground(new java.awt.Color(255, 255, 255));
+        numeral1.setText("#");
+
+        numeroActividades.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        numeroActividades.setForeground(new java.awt.Color(255, 255, 255));
+        numeroActividades.setText("0");
+
+        javax.swing.GroupLayout cantidadMascotas1Layout = new javax.swing.GroupLayout(cantidadMascotas1);
+        cantidadMascotas1.setLayout(cantidadMascotas1Layout);
+        cantidadMascotas1Layout.setHorizontalGroup(
+            cantidadMascotas1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(cantidadMascotas1Layout.createSequentialGroup()
+                .addContainerGap(51, Short.MAX_VALUE)
+                .addComponent(numeral1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(numeroActividades, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32))
+            .addComponent(actvregistxt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(actvRegistradasTxt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        cantidadMascotas1Layout.setVerticalGroup(
+            cantidadMascotas1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cantidadMascotas1Layout.createSequentialGroup()
+                .addContainerGap(74, Short.MAX_VALUE)
+                .addGroup(cantidadMascotas1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(numeral1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(numeroActividades))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(actvregistxt)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(actvRegistradasTxt)
+                .addGap(14, 14, 14))
+        );
 
         javax.swing.GroupLayout homePanelLayout = new javax.swing.GroupLayout(homePanel);
         homePanel.setLayout(homePanelLayout);
         homePanelLayout.setHorizontalGroup(
             homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(homePanelLayout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(369, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(cantidadMascotas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(cantidadMascotas1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(384, Short.MAX_VALUE))
         );
         homePanelLayout.setVerticalGroup(
             homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(homePanelLayout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(446, Short.MAX_VALUE))
+                .addGap(33, 33, 33)
+                .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cantidadMascotas1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cantidadMascotas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(276, Short.MAX_VALUE))
         );
 
         contenido.addTab("tab1", homePanel);
@@ -370,6 +472,26 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void consultarCantidadMascotas(){
+        try{
+            int cedulaInt = Integer.parseInt(cedula);
+            int id_user = Herramientas.obtenerIdUsuarioPorDocumento(cedulaInt);
+            
+            String contadorSql = "SELECT COUNT(*) FROM mascotas WHERE usuario = ?";
+            PreparedStatement contadorAnimales = conn.prepareStatement(contadorSql);
+            contadorAnimales.setInt(1, id_user);
+            ResultSet contadorResult = contadorAnimales.executeQuery();
+            if (contadorResult.next()) {
+                contadorValue = contadorResult.getInt(1);
+                System.out.println("CONTADOR: " + contadorValue);
+            } else {
+                System.out.println("No se encontró ningún resultado para el contador.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
     private void mascotasButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mascotasButtonActionPerformed
         System.out.println("Boton mascotas");
         contenido.setSelectedIndex(1);
@@ -464,10 +586,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             dietasButton.setBackground(new java.awt.Color(51, 51, 51));
     }//GEN-LAST:event_dietasButtonMouseExited
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
     private void cerrarSesionMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cerrarSesionMouseEntered
         cerrarSesion.setBackground(new java.awt.Color(90, 90, 90));
     }//GEN-LAST:event_cerrarSesionMouseEntered
@@ -496,18 +614,26 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton activityButton;
+    private javax.swing.JLabel actvRegistradasTxt;
+    private javax.swing.JLabel actvregistxt;
+    private javax.swing.JPanel cantidadMascotas;
+    private javax.swing.JPanel cantidadMascotas1;
     private javax.swing.JButton cerrarSesion;
     private javax.swing.JTabbedPane contenido;
     private javax.swing.JLabel currentUser;
     private javax.swing.JLabel currentUserText;
     private javax.swing.JButton dietasButton;
     private javax.swing.JPanel homePanel;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JButton mainButton;
     private javax.swing.JButton mascotasButton;
+    private javax.swing.JLabel mascotastxt;
     private javax.swing.JPanel nav;
     private javax.swing.JLabel navLogo;
+    private javax.swing.JLabel numeral;
+    private javax.swing.JLabel numeral1;
+    private javax.swing.JLabel numeroActividades;
+    private javax.swing.JLabel numeroDeMascotas;
+    private javax.swing.JLabel registradastxt;
     private javax.swing.JButton registroCliniButton;
     private javax.swing.JPanel relleno;
     private javax.swing.JPanel relleno2;

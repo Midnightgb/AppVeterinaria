@@ -44,7 +44,8 @@ public class AgregarRegistro extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tratamientoOutput = new javax.swing.JTextArea();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         panelAgregarregistro.setBackground(new java.awt.Color(43, 43, 43));
 

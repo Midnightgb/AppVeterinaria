@@ -54,12 +54,13 @@ public class PanelMascotas extends javax.swing.JPanel {
 
         add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 13, 827, 6));
 
-        addMascota.setBackground(new java.awt.Color(90, 90, 90));
+        addMascota.setBackground(new java.awt.Color(79, 147, 210));
         addMascota.setFont(new java.awt.Font("Source Code Pro", 0, 14)); // NOI18N
-        addMascota.setForeground(new java.awt.Color(210, 210, 210));
+        addMascota.setForeground(new java.awt.Color(255, 255, 255));
         addMascota.setText("Registrar mascota");
-        addMascota.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        addMascota.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         addMascota.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        addMascota.setFocusPainted(false);
         addMascota.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 addMascotaMousePressed(evt);
@@ -192,6 +193,20 @@ public class PanelMascotas extends javax.swing.JPanel {
 
             ResultSet resultSet = selectStatement.executeQuery();
 
+            String contadorSql = "SELECT COUNT(*) FROM mascotas WHERE usuario = ?";
+            PreparedStatement contadorAnimales = conn.prepareStatement(contadorSql);
+            contadorAnimales.setInt(1, id_user);
+            ResultSet contadorResult = contadorAnimales.executeQuery();
+            int contadorValue = 0;
+            if (contadorResult.next()) {
+                contadorValue = contadorResult.getInt(1);
+                System.out.println("CONTADOR: " + contadorValue);
+            } else {
+                System.out.println("No se encontró ningún resultado para el contador.");
+            }
+
+
+            
             listaMascotas.removeAll();
 
             int startIndex = currentPage * itemsPerPage;
@@ -205,9 +220,7 @@ public class PanelMascotas extends javax.swing.JPanel {
 
             int counter = 0;
             
-            int totalItems = 0;
             while (resultSet.next()) {
-                totalItems++;
                 if (counter >= startIndex && counter < endIndex) {
                     String id_mascota = resultSet.getString("id_mascota");
                     byte[] imagenData = resultSet.getBytes("imagen");
@@ -235,12 +248,12 @@ public class PanelMascotas extends javax.swing.JPanel {
                     break;
                 }
             }
-            int totalPages = (totalItems + itemsPerPage - 2) / itemsPerPage; // Cálculo de páginas totales
+            int totalPages = (contadorValue + itemsPerPage - 1) / itemsPerPage; // Cálculo de páginas totales
             System.out.println("Total pag "+totalPages);
             System.out.println("pag act "+currentPage);
 
             // Actualizar visibilidad de botones de navegación
-            nextPageButton.setVisible(currentPage < totalPages);
+            nextPageButton.setVisible(currentPage < totalPages-1);
             prevPageButton.setVisible(currentPage > 0);
             
             listaMascotas.revalidate();
@@ -249,7 +262,9 @@ public class PanelMascotas extends javax.swing.JPanel {
             // Cerrar recursos
             resultSet.close();
             selectStatement.close();
-
+            
+            contadorResult.close(); 
+            contadorAnimales.close(); 
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -286,7 +301,7 @@ public class PanelMascotas extends javax.swing.JPanel {
         verDetallesMascota.setFont(new java.awt.Font("Source Code Pro", 0, 12)); // NOI18N
         verDetallesMascota.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         verDetallesMascota.setForeground(new java.awt.Color(255, 255, 255));
-        verDetallesMascota.setText("Ver más");
+        verDetallesMascota.setText("Detalles");
         verDetallesMascota.setToolTipText(id_mascota);
         verDetallesMascota.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -294,6 +309,7 @@ public class PanelMascotas extends javax.swing.JPanel {
             }
         });
         verDetallesMascota.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
 
 
         javax.swing.GroupLayout mascotaLayout = new javax.swing.GroupLayout(mascotaPanel);

@@ -27,22 +27,4 @@ public class DataBase {
     public Connection getConexion() {
         return conexion;
     }   
-
-    public boolean insertarUsuario(String cedula, String nombre, String apellidos, String correo, String usuario, String contrasena){
-        boolean respuesta = false;
-        
-        try {
-            String consulta = "INSERT INTO mascotas (documento, nombre, apellidos, email, correo, usuario, contrasena) VALUES ('"+cedula+"','"+nombre+"','"+apellidos+"','"+correo+"','"+usuario+"','"+contrasena+"')";
-            int resultado = this.manipularDB.executeUpdate(consulta);
-            if (resultado==1) {
-                respuesta = true;
-            }
-        } catch (SQLException ex) {
-            System.out.println("Error al insertar: "+ex.getMessage());
-        }
-        
-        return respuesta;
-    }
-
-    
 }

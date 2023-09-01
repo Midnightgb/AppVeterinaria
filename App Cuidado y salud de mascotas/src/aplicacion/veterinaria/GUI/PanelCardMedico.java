@@ -297,6 +297,21 @@ public class PanelCardMedico extends javax.swing.JPanel {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             
+            String sqlContador = "SELECT COUNT(*) AS total_registros " +
+             "FROM registro_medico R " +
+             "INNER JOIN mascotas M ON R.mascota = M.id_mascota " +
+             "WHERE M.usuario = ?";
+            PreparedStatement contadorRegistros = conn.prepareStatement(sqlContador);
+            contadorRegistros.setInt(1, idUsuario);
+            ResultSet contadorResult = contadorRegistros.executeQuery();
+            int contadorValue = 0;
+            if (contadorResult.next()) {
+                contadorValue = contadorResult.getInt(1);
+                System.out.println("CONTADOR: " + contadorValue);
+            } else {
+                System.out.println("No se encontró ningún resultado para el contador.");
+            }
+
             listaRegistros.removeAll();
             
             int startIndex = currentPage * itemsPerPage;
@@ -309,10 +324,8 @@ public class PanelCardMedico extends javax.swing.JPanel {
 
             int counter = 0;
             
-            int totalItems = 0;
             
             while (resultSet.next()) {
-                totalItems++;
                 if (counter >= startIndex && counter < endIndex) {
                     String idRegistro = resultSet.getString("id_registro");
                     String fechaRegistrotxt = resultSet.getString("fecha_registro");
@@ -328,7 +341,6 @@ public class PanelCardMedico extends javax.swing.JPanel {
                     GridBagConstraints gbc = new GridBagConstraints();
                     gbc.gridx = 0;
                     gbc.gridy = row;
-                    System.out.println("row "+row);
                     gbc.ipadx = 11;
                     gbc.anchor = GridBagConstraints.NORTHWEST;
                     gbc.insets = new Insets(20, 0, 0, 0);
@@ -347,9 +359,9 @@ public class PanelCardMedico extends javax.swing.JPanel {
                     break;
                 }
             }
-            int totalPages = (totalItems + itemsPerPage - 2) / itemsPerPage; 
+            int totalPages = (contadorValue + itemsPerPage - 1) / itemsPerPage; 
 
-            nextPageButton.setVisible(currentPage < totalPages);
+            nextPageButton.setVisible(currentPage < totalPages-1);
             prevPageButton.setVisible(currentPage > 0);
 
             listaRegistros.revalidate();

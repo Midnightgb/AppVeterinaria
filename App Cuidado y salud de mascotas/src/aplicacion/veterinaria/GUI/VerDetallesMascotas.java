@@ -4,13 +4,11 @@ package aplicacion.veterinaria.GUI;
 import aplicacion.veterinaria.DataBase;
 import aplicacion.veterinaria.Herramientas;
 import java.awt.Image;
-import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
 
 
@@ -151,7 +149,7 @@ public class VerDetallesMascotas extends javax.swing.JPanel {
         });
         panelDetalles.add(guardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 430, 75, 40));
 
-        irAtras.setBackground(new java.awt.Color(62, 112, 157));
+        irAtras.setBackground(new java.awt.Color(79, 147, 210));
         irAtras.setFont(new java.awt.Font("Source Code Pro", 0, 14)); // NOI18N
         irAtras.setForeground(new java.awt.Color(255, 255, 255));
         irAtras.setText("Atras");

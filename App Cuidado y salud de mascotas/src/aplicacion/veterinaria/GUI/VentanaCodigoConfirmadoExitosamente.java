@@ -60,10 +60,11 @@ public class VentanaCodigoConfirmadoExitosamente extends javax.swing.JFrame {
             }
         });
 
-        confirmar.setBackground(new java.awt.Color(90, 90, 90));
-        confirmar.setForeground(new java.awt.Color(210, 210, 210));
+        confirmar.setBackground(new java.awt.Color(48, 119, 62));
+        confirmar.setFont(new java.awt.Font("Source Code Pro", 1, 14)); // NOI18N
+        confirmar.setForeground(new java.awt.Color(255, 255, 255));
         confirmar.setText("Confirmar");
-        confirmar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        confirmar.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         confirmar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         confirmar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -71,10 +72,11 @@ public class VentanaCodigoConfirmadoExitosamente extends javax.swing.JFrame {
             }
         });
 
-        cancelar.setBackground(new java.awt.Color(90, 90, 90));
-        cancelar.setForeground(new java.awt.Color(210, 210, 210));
+        cancelar.setBackground(new java.awt.Color(255, 107, 107));
+        cancelar.setFont(new java.awt.Font("Source Code Pro", 1, 14)); // NOI18N
+        cancelar.setForeground(new java.awt.Color(255, 255, 255));
         cancelar.setText("Cancelar");
-        cancelar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        cancelar.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         cancelar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         cancelar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {

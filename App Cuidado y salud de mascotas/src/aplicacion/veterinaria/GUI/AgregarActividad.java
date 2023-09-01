@@ -216,15 +216,12 @@ public class AgregarActividad extends javax.swing.JFrame {
 
             int rowsAffected = insert.executeUpdate();
             if (rowsAffected > 0) {
-                PanelActividades actv = new PanelActividades(cedula);
-                actv.consultarActividades();
                 setVisible(false);
                 Herramientas.error("Actividad Guardada",true);
             } else {
                 Herramientas.error("Inténtalo nuevamente", false);
             }
 
-            // Cerrar recursos
             insert.close();
 
         } catch (SQLException e) {

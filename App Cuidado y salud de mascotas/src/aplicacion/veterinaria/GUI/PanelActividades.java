@@ -8,14 +8,16 @@ import java.awt.Insets;
 import java.sql.*;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import java.util.HashMap;
+import java.util.Map;
 
 
-public class PanelActividades extends javax.swing.JPanel {
-
+public class PanelActividades extends javax.swing.JPanel{
+    
+    private Map<String, ComponentTrio> componentMap = new HashMap<>();
     private DataBase db = new DataBase();
     private Connection conn = db.getConexion();
     private String cedula;
@@ -26,6 +28,7 @@ public class PanelActividades extends javax.swing.JPanel {
         this.cedula = cedula;
         
         initComponents();
+
     }
 
     @SuppressWarnings("unchecked")
@@ -283,7 +286,7 @@ public class PanelActividades extends javax.swing.JPanel {
             .addComponent(panelContenidoActv, javax.swing.GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
-
+    
     private boolean borradoInput;
     private void mascotaAbuscarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_mascotaAbuscarKeyTyped
         if (!borradoInput) {
@@ -294,6 +297,7 @@ public class PanelActividades extends javax.swing.JPanel {
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         btnActualizar.setEnabled(true);
+        btnActualizar.setVisible(true);
         notaActividad.setEnabled(true);
     }//GEN-LAST:event_btnEditarActionPerformed
 
@@ -364,6 +368,22 @@ public class PanelActividades extends javax.swing.JPanel {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             
+            String sqlContador = "SELECT COUNT(*) AS total_actividades " +
+                         "FROM actividades_diarias A " +
+                         "INNER JOIN mascotas M ON A.mascota = M.id_mascota " +
+                         "WHERE M.usuario = ?";
+
+            PreparedStatement contadorActividades = conn.prepareStatement(sqlContador);
+            contadorActividades.setInt(1, idUsuario);
+            ResultSet contadorResult = contadorActividades.executeQuery();
+            int contadorValue = 0;
+            if (contadorResult.next()) {
+                contadorValue = contadorResult.getInt(1);
+                System.out.println("CONTADOR: " + contadorValue);
+            } else {
+                System.out.println("No se encontró ningún resultado para el contador.");
+            }
+
             listaActividades.removeAll();
             
             int startIndex = currentPage * itemsPerPage;
@@ -376,10 +396,7 @@ public class PanelActividades extends javax.swing.JPanel {
 
             int counter = 0;
             
-            int totalItems = 0;
-            
             while (resultSet.next()) {
-                totalItems++;
                 if (counter >= startIndex && counter < endIndex) {
                     String idActividad = resultSet.getString("id");
                     String tituloActividad = resultSet.getString("tipo_actividad");
@@ -415,12 +432,9 @@ public class PanelActividades extends javax.swing.JPanel {
                     break;
                 }
             }
-            int totalPages = (totalItems + itemsPerPage - 2) / itemsPerPage; 
-            System.out.println("Items "+totalItems);
-            System.out.println("pag "+totalPages);
-            System.out.println("contador "+counter);
+            int totalPages = (contadorValue + itemsPerPage - 1) / itemsPerPage; 
 
-            nextPageButton.setVisible(currentPage < totalPages);
+            nextPageButton.setVisible(currentPage < totalPages - 1);
             prevPageButton.setVisible(currentPage > 0);
 
             listaActividades.revalidate();
@@ -491,9 +505,20 @@ public class PanelActividades extends javax.swing.JPanel {
         btnEditar.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         btnEditar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnEditar.setFocusPainted(false);
-        btnEditar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditarActionPerformed(evt);
+        btnEditar.addMouseListener(new java.awt.event.MouseAdapter () {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                JButton btnEditar = (JButton) evt.getSource();
+                String idActv = btnEditar.getToolTipText();
+
+                if (componentMap.containsKey(idActv)) {
+                    ComponentTrio trio = componentMap.get(idActv);
+                    JButton btnActualizar = trio.getBtnActualizar();
+                    JTextArea notaActividad = trio.getTextArea();
+
+                    btnActualizar.setEnabled(true);
+                    btnActualizar.setVisible(true);
+                    notaActividad.setEnabled(true);
+                }
             }
         });
 
@@ -505,6 +530,7 @@ public class PanelActividades extends javax.swing.JPanel {
         btnActualizar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnActualizar.setFocusPainted(false);
         btnActualizar.setEnabled(false);
+        btnActualizar.setVisible(false);
         btnActualizar.setToolTipText(idActividad);
         btnActualizar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -525,8 +551,7 @@ public class PanelActividades extends javax.swing.JPanel {
                             String notas = notaActividad.getText();
                             System.out.println("Notas actualizar:");
                             System.out.println(notas);
-                            // Aquí puedes llamar a un método para actualizar la actividad
-                            // Pasando el ID de la actividad y las nuevas notas
+
                             actualizarActividad(idActv, notas);
                             break;
                         }
@@ -619,12 +644,11 @@ public class PanelActividades extends javax.swing.JPanel {
                     .addComponent(btnEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
-
+        componentMap.put(idActividad, new ComponentTrio(btnActualizar,null, notaActividad));
         cartaActividad.add(detalleActividad, new org.netbeans.lib.awtextra.AbsoluteConstraints(124, 6, -1, 150));
 
         return cartaActividad;
     }
-    
     
     private void eliminarActividad(String idActividad) {
         try {
@@ -635,7 +659,7 @@ public class PanelActividades extends javax.swing.JPanel {
             int rowsAffected = deleteStatement.executeUpdate();
 
             if (rowsAffected > 0) {
-                Herramientas.error("Actividad eliminada: ", true);
+                Herramientas.error("  Actividad eliminada", true);
                 consultarActividades();
             } else {
                 Herramientas.error("No se pudo eliminar la actividad",false);
